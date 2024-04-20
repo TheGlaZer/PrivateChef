@@ -1,12 +1,18 @@
 import React from 'react';
-import Home from './Pages/Home';
+import Home from './Pages/Home/Home';
 import './App.css'
+import Navbar from './Components/Navbar';
 
 function App() {
   return (
     <>
-      <div style={{ width: '100%', height: '100vh', backgroundColor: 'lightgray', display: "flex", justifyContent: "center", padding: 0, margin: 0 }}>
-        <div style={{ width: '70%', display: "flex", justifyContent: "center", backgroundColor: "white" }}>
+      <div style={{
+        width: '100%', minHeight: "100vh", backgroundColor: 'lightgray',
+        display: "flex", alignItems: "center", padding: 0, margin: 0, position: "relative",
+        flexDirection: "column"
+      }}>
+        <Navbar></Navbar>
+        <div style={{ width: '90%', minHeight: "100%", padding: 50, backgroundColor: "white" }}>
           <Home></Home>
         </div>
       </div>
