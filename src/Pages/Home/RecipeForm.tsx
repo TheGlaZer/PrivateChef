@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getRecipeAPI } from '../../api/recipe';
 import { Recipe } from '@/models';
-import ListDataContainer from './UserProductsContainer';
+import ListDataContainer from './ListDataContainer';
 
 type FormData = {
     preferences?: string;
