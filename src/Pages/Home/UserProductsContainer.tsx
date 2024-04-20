@@ -6,7 +6,7 @@ type UserProductsContainerProps = {
     title: string
 }
 
-export default function UserProductsContainer({ data, title }: UserProductsContainerProps) {
+export default function ListDataContainer({ data, title }: UserProductsContainerProps) {
 
 
 
