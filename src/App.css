@@ -1,0 +1,39 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    /* height: 100%; */
+}
+
+/* Styles for the scrollbar track (part the actual scrollbar moves within) */
+::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    /* Light grey track */
+}
+
+/* Styles for the scrollbar handle */
+::-webkit-scrollbar-thumb {
+    background-color: #9c9b9b;
+    /* Grey handle */
+    border-radius: 10px;
+    /* Rounded corners on the scrollbar handle */
+    border: 2px solid #f0f0f0;
+    /* Creates a little border of the track color around the handle */
+}
+
+/* Styles for the scrollbar itself (including width and height) */
+::-webkit-scrollbar {
+    width: 10px;
+    /* Vertical scrollbars width */
+    height: 8px;
+    /* Horizontal scrollbars height */
+}
+
+/* Optional: styling for scrollbar corner */
+::-webkit-scrollbar-corner {
+    background-color: #f0f0f0;
+    /* Matching the track */
+}
