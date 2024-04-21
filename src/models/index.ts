@@ -1,4 +1,13 @@
-export type Recipe = {
+export type RecipeRequest = {
     allergies: string[];
-    products: string[];
+    ingredients: string[];
+
 }
+
+export type Recipe = {
+    title: string,
+    ingredients: string[],
+    instructions: string
+}
+
+

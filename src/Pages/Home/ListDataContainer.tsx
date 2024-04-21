@@ -1,14 +1,26 @@
-import { List, ListItem, ListSubheader } from '@mui/material'
+import { Card, List, ListItem, ListSubheader } from '@mui/material'
 import React from 'react'
+import CloseOutlined from '@mui/icons-material/CloseOutlined'
+import { RecpieForm } from './RecipeForm'
 
-type UserProductsContainerProps = {
+type ListDataContainerProps = {
     data: string[],
-    title: string
+    title: string,
+    setter: (value: React.SetStateAction<RecpieForm>) => void,
+    prop: "allergies" | "ingredients",
 }
 
-export default function ListDataContainer({ data, title }: UserProductsContainerProps) {
+export default function ListDataContainer({ data, title, setter, prop }: ListDataContainerProps) {
 
-
+    const handleDeleteItem = (listItem: string) => {
+        setter(formData => {
+            const items = formData[prop].filter(item => item !== listItem)
+            return {
+                ...formData,
+                [prop]: items
+            }
+        })
+    }
 
     return data.length === 0 ? <></> : (
         <List subheader={<ListSubheader>{title}</ListSubheader>}
@@ -19,11 +31,16 @@ export default function ListDataContainer({ data, title }: UserProductsContainer
                 overflow: 'auto', // Enables scrolling
                 borderWidth: 1,
                 border: "1px solid gray", // This should be 'solid', 'dotted', 'dashed', etc.
-                borderRadius: 2
+                borderRadius: 2,
+                padding: 2,
+
             }}
         >
             {data.map((item, index) => (
-                <ListItem key={index}>{item}</ListItem>
+                <Card style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: 10, marginTop: 5 }}>
+                    <ListItem key={index}>{item}</ListItem>
+                    <CloseOutlined style={{ width: 20, height: 20 }} onClick={() => handleDeleteItem(item)} />
+                </Card >
             ))}
         </List>
     )
