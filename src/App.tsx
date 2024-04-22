@@ -2,6 +2,7 @@ import React from 'react';
 import Home from './Pages/Home/HomePage';
 import './App.css'
 import Navbar from './Components/Navbar';
+import MessageBox from './Components/MessageBox';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <div style={{ width: '90%', minHeight: "100%", padding: 50, backgroundColor: "white" }}>
           <Home></Home>
         </div>
+        <MessageBox />
       </div>
     </>
   );

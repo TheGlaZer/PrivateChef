@@ -3,6 +3,7 @@ import { TextField, Checkbox, Button, FormControlLabel, FormGroup } from '@mui/m
 import { getRecipeAPI } from '../../api/recipe';
 import { Recipe, RecipeRequest } from '../../models/index';
 import InputItemsList from '../../Components/InputItemsList';
+import { useMessageContext } from '../../contexts/MessageBox';
 
 export type RecpieForm = {
     preferences?: string;
@@ -21,6 +22,9 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
 
     const [formData, setFormData] = useState<RecpieForm>({ preferences: '', hasAllergies: false, allergies: [], ingredients: [] });
 
+    const { setErrorMessage } = useMessageContext()
+    setErrorMessage('Error getting a recipe')
+
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
@@ -34,6 +38,7 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
     };
 
     const handleRecipe = async () => {
+        debugger;
         const { allergies, ingredients } = formData
         const recipeRequest: RecipeRequest = {
             allergies,
@@ -43,8 +48,10 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
             const recipe = await getRecipeAPI(recipeRequest)
             setRecipe(recipe)
             setOpen(true)
-            console.log(" RESPONSE : ", recipe)
-        } catch (err) { console.log(err) }
+        } catch (err) {
+            console.log(err)
+            setErrorMessage('Error getting a recipe')
+        }
     }
 
     return (
