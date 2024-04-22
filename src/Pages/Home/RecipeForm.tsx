@@ -11,7 +11,14 @@ export type RecpieForm = {
     ingredients: string[];
 };
 
-const RecipeForm: React.FC = () => {
+type RecipeFormProps = {
+    setRecipe: React.Dispatch<React.SetStateAction<Recipe | null>>,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+// const RecipeForm: React.FC = ({ setRecipe }: RecipeFormProps) => {
+export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
+
     const [formData, setFormData] = useState<RecpieForm>({ preferences: '', hasAllergies: false, allergies: [], ingredients: [] });
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,13 +35,15 @@ const RecipeForm: React.FC = () => {
 
     const handleRecipe = async () => {
         const { allergies, ingredients } = formData
-        const recipe: RecipeRequest = {
+        const recipeRequest: RecipeRequest = {
             allergies,
             ingredients
         }
         try {
-            const res = await getRecipeAPI(recipe)
-            console.log(" RESPONSE : ", res)
+            const recipe = await getRecipeAPI(recipeRequest)
+            setRecipe(recipe)
+            setOpen(true)
+            console.log(" RESPONSE : ", recipe)
         } catch (err) { console.log(err) }
     }
 
@@ -60,5 +69,3 @@ const RecipeForm: React.FC = () => {
         </form>
     );
 };
-
-export default RecipeForm;

@@ -6,8 +6,12 @@ export type RecipeRequest = {
 
 export type Recipe = {
     title: string,
-    ingredients: string[],
-    instructions: string
+    products: ProductInRecipe[],
+    instructions: string[]
 }
 
+export type ProductInRecipe = {
+    product: string,
+    amount: string
+}
 
