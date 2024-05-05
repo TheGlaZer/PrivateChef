@@ -1,46 +1,64 @@
-import ListDataContainer from './../Pages/Home/ListDataContainer';
 import { RecpieForm } from '@/Pages/Home/RecipeForm';
-import { IconButton, TextField } from '@mui/material'
-import React, { useState } from 'react'
-import AddIcon from '@mui/icons-material/Add';
+import { Autocomplete, AutocompleteGetTagProps, Chip, TextField } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import RemoveIcon from "@material-ui/icons/RemoveCircleOutlineSharp";
 
 type InputItemsListProps = {
-    data: string[],
+    availableItems : string[],
+    chosenItems: string[],
     setter: (value: React.SetStateAction<RecpieForm>) => void,
     prop: "allergies" | "ingredients",
     label: string
 }
 
-export default function InputItemsList({ data, setter, prop, label }: InputItemsListProps) {
+export default function InputItemsList({availableItems, chosenItems, setter, prop, label }: InputItemsListProps) {
 
-    const [textItem, setTextItem] = useState('');
-
-    const handleAddItem = () => {
-        if (!textItem) return
-        setter((formData: RecpieForm) => ({
-            ...formData,
-            [prop]: [...formData[prop], textItem],
-        }));
-        setTextItem('');
-    }
+  const valHtml = chosenItems.map((option: string, index: number) => {
+    // This is to handle new options added by the user (allowed by freeSolo prop).
+    const label = option ;
+    return (
+      <Chip
+        key={label}
+        label={label}
+        deleteIcon={<RemoveIcon />}
+        onDelete={() => {
+            setter((formData: RecpieForm) => ({
+                ...formData,
+                [prop]: chosenItems.filter(entry => entry !== option),
+            }))
+        }}
+      />
+    );
+  });
 
     return (
-        <>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <TextField
-                    style={{ width: 400 }}
-                    label={label}
-                    variant="outlined"
-                    value={textItem}
-                    onChange={(e) => setTextItem(e.target.value)}
-                    margin="normal"
-                />
-                <IconButton aria-label="delete" onClick={handleAddItem} color='primary' >
-                    <AddIcon />
-                </IconButton>
-            </div>
-            <ListDataContainer prop={prop} data={data} title={prop} setter={setter} />
-
-        </>
+            <div style={{ width: 500 }}>
+            <Autocomplete
+            multiple
+            id="tags-standard"
+            freeSolo
+            filterSelectedOptions
+            options={availableItems}
+            onChange={(e, newValue) =>  setter((formData: RecpieForm) => ({
+                ...formData,
+                [prop]: [...newValue],
+            }))}
+            getOptionLabel={(option: string) => option}
+            renderTags={(value: string[], getTagProps: AutocompleteGetTagProps) => null}
+            value={chosenItems}
+            renderInput={params => (
+            <TextField
+              {...params}
+              variant="standard"
+              placeholder={label}
+              margin="normal"
+              fullWidth
+            />
+            )}
+        />
+            <div className="selectedTags">{valHtml}</div>
+        </div>
+        </div>
     )
 }
