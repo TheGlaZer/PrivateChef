@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Checkbox, Button, FormControlLabel, FormGroup } from '@mui/material';
 import { getRecipeAPI } from '../../api/recipe';
 import { Recipe, RecipeRequest } from '../../models/index';
 import InputItemsList from '../../Components/InputItemsList';
 import { useMessageContext } from '../../contexts/MessageBox';
+import { getIngredientsAPI } from '../../api/ingredient';
 
 export type RecpieForm = {
     preferences?: string;
@@ -19,11 +20,17 @@ type RecipeFormProps = {
 
 // const RecipeForm: React.FC = ({ setRecipe }: RecipeFormProps) => {
 export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
-
     const [formData, setFormData] = useState<RecpieForm>({ preferences: '', hasAllergies: false, allergies: [], ingredients: [] });
+    const [ingredients, setIngredients] = useState<string[]>([]);
 
+    useEffect(() => {
+        getIngredientsAPI().then(ingredients => {
+            setIngredients(ingredients.map(ingredient => ingredient.name));
+        }).catch(err => {
+            console.log(err);
+        });
+    }, []);
     const { setErrorMessage } = useMessageContext()
-    setErrorMessage('Error getting a recipe')
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -65,9 +72,9 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
                             label="Allergic to any food?"
                         />
                         {formData.hasAllergies &&
-                            <InputItemsList data={formData.allergies} prop='allergies' setter={setFormData} label='Add Alergy..' ></InputItemsList>}
+                            <InputItemsList availableItems={ingredients} chosenItems={formData.allergies} prop='allergies' setter={setFormData} label='Add Alergy..' ></InputItemsList>}
                     </div>
-                    <InputItemsList data={formData.ingredients} prop='ingredients' setter={setFormData} label='Add Ingredient..' ></InputItemsList>
+                    <InputItemsList availableItems={ingredients} chosenItems={formData.ingredients} prop='ingredients' setter={setFormData} label='Add Ingredient..' ></InputItemsList>
                 </div>
             </FormGroup>
             <div style={{ display: "flex", justifyContent: "end", padding: 20 }}>

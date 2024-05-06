@@ -1,14 +1,21 @@
 import React from 'react'
 import logoImage from '../../assets/Logo.png'
 import saladImage from '../../assets/salad.jpg'
+import { Box, Button, Typography } from '@mui/material'
 
 export default function WellcomeLayout() {
     return (
-        <div style={{ display: "flex", justifyContent: "start", flexDirection: "column", width: "100%", }}>
-            <img src={logoImage} alt="" style={{ width: 200, height: 100 }} />
-            <img src={saladImage} alt="" style={{ width: 800, height: 300 }} />
-            <h1>Wellcome to PrivateChef </h1>
-            <p>Here you will get your best menu</p>
-        </div>
+        <Box style={{ display: "flex", justifyContent: "start", flexDirection: "column", width: "100%", }}>
+            <Typography variant='h3'>Welcome to PrivateChef </Typography>
+            <Typography paragraph={true}>Here you will get your best menu</Typography>
+            <Box sx={{ display: 'flex', mt: 2 }}>
+                <Button variant="contained" color="primary" sx={{ mr: 1 }}>
+                    Sign In
+                </Button>
+                <Button variant="outlined" color="secondary">
+                    Log In
+                </Button>
+            </Box>
+        </Box>
     )
 }
