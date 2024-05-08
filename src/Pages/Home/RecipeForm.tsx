@@ -45,7 +45,6 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
     };
 
     const handleRecipe = async () => {
-        debugger;
         const { allergies, ingredients } = formData
         const recipeRequest: RecipeRequest = {
             allergies,
