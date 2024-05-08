@@ -17,6 +17,8 @@ export type Ingredient = {
 
 export type ProductInRecipe = {
     product: string,
+    name: string,
+    ingredient: string,
     amount: string
 }
 

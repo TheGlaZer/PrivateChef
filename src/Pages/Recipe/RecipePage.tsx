@@ -15,7 +15,7 @@ export default function RecipePage({ recipe }: RecipePageProps) {
             <div>
                 <h3>Products</h3>
                 <ul>
-                    {products.map(product => <li>{product.product} {product.amount}</li>)}
+                    {products.map(product => <li>  {product.amount}  {product.name || product.product || product.ingredient} </li>)}
                 </ul>
             </div>
             <div>
