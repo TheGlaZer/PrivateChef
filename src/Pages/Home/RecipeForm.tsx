@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Checkbox, Button, FormControlLabel, FormGroup } from '@mui/material';
+import { TextField, Checkbox, Button, FormControlLabel, FormGroup, CircularProgress } from '@mui/material';
 import { getRecipeAPI } from '../../api/recipe';
 import { Recipe, RecipeRequest } from '../../models/index';
 import InputItemsList from '../../Components/InputItemsList';
@@ -22,6 +22,7 @@ type RecipeFormProps = {
 export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
     const [formData, setFormData] = useState<RecpieForm>({ preferences: '', hasAllergies: false, allergies: [], ingredients: [] });
     const [ingredients, setIngredients] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false); // State to track loading state
 
     useEffect(() => {
         getIngredientsAPI().then(ingredients => {
@@ -39,9 +40,11 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        handleRecipe();
+        setLoading(true);
+        await handleRecipe();
+        setLoading(false);
     };
 
     const handleRecipe = async () => {
@@ -78,6 +81,7 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
             </FormGroup>
             <div style={{ display: "flex", justifyContent: "end", padding: 20 }}>
                 <Button type="submit" variant="contained" color="primary" size='medium'>Submit</Button>
+                {loading && <CircularProgress />} {/* Conditionally render spinner */}
             </div>
         </form>
     );

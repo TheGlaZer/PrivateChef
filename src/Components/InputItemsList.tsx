@@ -1,7 +1,7 @@
 import { RecpieForm } from '@/Pages/Home/RecipeForm';
 import { Autocomplete, AutocompleteGetTagProps, Chip, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import RemoveIcon from "@material-ui/icons/RemoveCircleOutlineSharp";
+import RemoveIcon from "@mui/icons-material/RemoveCircleOutlineSharp";
 
 type InputItemsListProps = {
     availableItems : string[],
