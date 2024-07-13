@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Checkbox, Button, FormControlLabel, FormGroup, CircularProgress } from '@mui/material';
+import { TextField, Checkbox, Button, FormControlLabel, FormGroup, CircularProgress, Typography } from '@mui/material';
 import { getRecipeAPI } from '../../api/recipe';
 import { Recipe, RecipeRequest } from '../../models/index';
 import InputItemsList from '../../Components/InputItemsList';
 import { useMessageContext } from '../../contexts/MessageBox';
 import { getIngredientsAPI } from '../../api/ingredient';
+import ImageSelector from '../../Components/ImageSelectorWithAi';
 
 export type RecpieForm = {
     preferences?: string;
@@ -63,11 +64,15 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
         }
     }
 
+    const handleFileChange = () => {
+
+    }
+
     return (
-        <form onSubmit={handleSubmit} style={{}}>
+        <form onSubmit={handleSubmit} style={{ width: 600 }}>
             <FormGroup >
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                    <h1>Make Your Own Recipe</h1>
+                    <Typography variant='h3' fontSize={35}>Make Your Own Recipe</Typography>
                     <div>
                         <FormControlLabel
                             control={<Checkbox checked={formData.hasAllergies} onChange={handleCheckboxChange} />}
@@ -77,6 +82,9 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
                             <InputItemsList availableItems={ingredients} chosenItems={formData.allergies} prop='allergies' setter={setFormData} label='Add Alergy..' ></InputItemsList>}
                     </div>
                     <InputItemsList availableItems={ingredients} chosenItems={formData.ingredients} prop='ingredients' setter={setFormData} label='Add Ingredient..' ></InputItemsList>
+                    <div style={{ paddingTop: 10 }}>
+                        <ImageSelector setter={setFormData} />
+                    </div>
                 </div>
             </FormGroup>
             <div style={{ display: "flex", justifyContent: "end", padding: 20 }}>

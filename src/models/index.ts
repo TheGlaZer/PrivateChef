@@ -3,22 +3,18 @@ export type RecipeRequest = {
     ingredients: string[];
 
 }
-
 export type Recipe = {
     title: string,
     products: ProductInRecipe[],
     instructions: string[]
 }
-
 export type Ingredient = {
-    id : string,
+    id: string,
     name: string
 }
-
 export type ProductInRecipe = {
     product: string,
     name: string,
     ingredient: string,
     amount: string
 }
-
