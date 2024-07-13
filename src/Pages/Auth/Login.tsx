@@ -4,25 +4,27 @@ import { Button, TextField, Container, Typography, Box, Link, Alert } from '@mui
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import { loginAPI } from '../../api/users';
+import { googleLoginAPI, loginAPI } from '../../api/users';
 import { useState } from 'react';
 
 function Login() {
   const [serverError, setServerError] = useState<string | null>(null);
 
-  const handleGoogleLoginSuccess = (response: any) => {
-    axios.post('/server/login', { token: response.tokenId }).then(response => {
-      console.log(response);
-    }).catch(error => {
+  const handleGoogleLoginSuccess = async (response: any) => {
+    try {
+        const serverResponse = await googleLoginAPI({ tokenId: response.tokenId });
+        console.log(serverResponse);
+    } catch(error) {
       console.error(error);
-    });
+    };
   };
 
   const login = async (values: { email: string, password: string }, setSubmitting: (isSubmitting: boolean) => void) => {
     try {
         console.log("logging in", )
       const response = await loginAPI(values);
-      const token = response.data.token;
+      console.log(response)
+      const token = response.accessToken;
       localStorage.setItem('token', token);
       console.log(response);
       setSubmitting(false);
@@ -36,10 +38,6 @@ function Login() {
   };
 
   const navigate = useNavigate();
-
-  const handleGoogleLoginFailure = (response: any) => {
-    console.error(response);
-  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -103,7 +101,7 @@ function Login() {
         <Box sx={{ mt: 2 }}>
           <GoogleLogin
             onSuccess={handleGoogleLoginSuccess}
-            onError={() => console.log("error")}
+            onError={() => setServerError("Error logging in with google")}
           />
         </Box>
         <Box sx={{ mt: 2 }}>
