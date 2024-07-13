@@ -1,17 +1,38 @@
 import { Formik, Field, Form,  } from 'formik';
 import * as Yup from 'yup';
-import { Button, TextField, Container, Typography, Box, Link } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, Link, Alert } from '@mui/material';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
+import { loginAPI } from '../../api/users';
+import { useState } from 'react';
 
 function Login() {
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const handleGoogleLoginSuccess = (response: any) => {
     axios.post('/server/login', { token: response.tokenId }).then(response => {
       console.log(response);
     }).catch(error => {
       console.error(error);
     });
+  };
+
+  const login = async (values: { email: string, password: string }, setSubmitting: (isSubmitting: boolean) => void) => {
+    try {
+        console.log("logging in", )
+      const response = await loginAPI(values);
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      console.log(response);
+      setSubmitting(false);
+      navigate('/');
+      // Navigate to another page or show success message here
+    } catch (error: any) {
+      console.error(error);
+      setServerError(error.response?.data?.message || 'An error occurred. Please try again.');
+      setSubmitting(false);
+    }
   };
 
   const navigate = useNavigate();
@@ -33,17 +54,12 @@ function Login() {
             password: Yup.string().required('Required')
           })}
           onSubmit={(values, { setSubmitting }) => {
-            axios.post('/server/login', values).then(response => {
-              console.log(response);
-              setSubmitting(false);
-            }).catch(error => {
-              console.error(error);
-              setSubmitting(false);
-            });
+            setServerError(null); // Clear any previous errors
+            login(values, setSubmitting);
           }}
         >
           {({ errors, touched, isSubmitting, isValid }) => (
-            <Form>
+            <Form >
               <Field
                 name="email"
                 as={TextField}
@@ -66,6 +82,11 @@ function Login() {
                 error={touched.password && Boolean(errors.password)}
                 helperText={touched.password && errors.password}
               />
+              {serverError && (
+                <Alert severity="error" sx={{ width: '100%', mt: 2 }}>
+                  {serverError}
+                </Alert>
+              )}
               <Button
                 type="submit"
                 fullWidth
