@@ -1,19 +1,20 @@
-// /src/SignUp.tsx
-import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field, Form,  } from 'formik';
 import * as Yup from 'yup';
-import { Button, TextField, Container, Typography, Box, Alert } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, Link } from '@mui/material';
 import axios from 'axios';
 import { GoogleLogin } from '@leecheuk/react-google-login';
+import { useNavigate } from 'react-router-dom';
 
-const SignUp = () => {
+function Login() {
   const handleGoogleLoginSuccess = (response: any) => {
-    axios.post('/server/register', { token: response.tokenId }).then(response => {
+    axios.post('/server/login', { token: response.tokenId }).then(response => {
       console.log(response);
     }).catch(error => {
       console.error(error);
     });
   };
+
+  const navigate = useNavigate();
 
   const handleGoogleLoginFailure = (response: any) => {
     console.error(response);
@@ -23,17 +24,16 @@ const SignUp = () => {
     <Container component="main" maxWidth="xs">
       <Box sx={{ mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography component="h1" variant="h5">
-          Sign Up
+          Login
         </Typography>
         <Formik
-          initialValues={{ username: '', email: '', password: '' }}
+          initialValues={{ email: '', password: '' }}
           validationSchema={Yup.object({
-            username: Yup.string().required('Required'),
             email: Yup.string().email('Invalid email address').required('Required'),
             password: Yup.string().required('Required')
           })}
           onSubmit={(values, { setSubmitting }) => {
-            axios.post('/server/register', values).then(response => {
+            axios.post('/server/login', values).then(response => {
               console.log(response);
               setSubmitting(false);
             }).catch(error => {
@@ -45,23 +45,13 @@ const SignUp = () => {
           {({ errors, touched, isSubmitting, isValid }) => (
             <Form>
               <Field
-                name="username"
-                as={TextField}
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                label="Username"
-                autoFocus
-                error={touched.username && Boolean(errors.username)}
-                helperText={touched.username && errors.username}
-              />
-              <Field
                 name="email"
                 as={TextField}
                 variant="outlined"
                 margin="normal"
                 fullWidth
                 label="Email Address"
+                autoFocus
                 error={touched.email && Boolean(errors.email)}
                 helperText={touched.email && errors.email}
               />
@@ -84,7 +74,7 @@ const SignUp = () => {
                 sx={{ mt: 3, mb: 2 }}
                 disabled={isSubmitting || !isValid}
               >
-                Sign Up
+                Login
               </Button>
             </Form>
           )}
@@ -92,15 +82,20 @@ const SignUp = () => {
         <Box sx={{ mt: 2 }}>
           <GoogleLogin
             clientId="YOUR_GOOGLE_CLIENT_ID"
-            buttonText="Sign Up with Google"
+            buttonText="Login with Google"
             onSuccess={handleGoogleLoginSuccess}
             onFailure={handleGoogleLoginFailure}
             cookiePolicy={'single_host_origin'}
           />
+        </Box>
+        <Box sx={{ mt: 2 }}>
+          <Link component="button" variant="body2" onClick={() => navigate("/signup")}>
+            {"Don't have an account? Sign Up"}
+          </Link>
         </Box>
       </Box>
     </Container>
   );
 };
 
-export default SignUp;
+export default Login;

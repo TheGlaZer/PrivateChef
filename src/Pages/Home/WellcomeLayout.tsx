@@ -1,6 +1,3 @@
-import React from 'react'
-import logoImage from '../../assets/Logo.png'
-import saladImage from '../../assets/salad.jpg'
 import { Box, Button, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
