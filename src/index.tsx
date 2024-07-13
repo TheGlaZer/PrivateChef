@@ -5,17 +5,21 @@ import reportWebVitals from './reportWebVitals';
 import { MessageProvider } from './contexts/MessageBox';
 import { ThemeProvider } from '@emotion/react';
 import {theme} from './theme/theme'
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { CLIENT_ID } from './consts';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    <GoogleOAuthProvider clientId={CLIENT_ID}>
     <ThemeProvider theme={theme}>
     <MessageProvider>
       <App />
     </MessageProvider>
     </ThemeProvider>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );
 

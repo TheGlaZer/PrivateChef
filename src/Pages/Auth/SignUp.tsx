@@ -2,7 +2,7 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { Button, TextField, Container, Typography, Box, Link } from '@mui/material';
 import axios from 'axios';
-import { GoogleLogin } from '@leecheuk/react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
@@ -17,8 +17,8 @@ function SignUp() {
 
   const navigate = useNavigate();
 
-  const handleGoogleLoginFailure = (response: any) => {
-    console.error(response);
+  const handleGoogleLoginFailure = () => {
+    console.error("Google login failed");
   };
 
   return (
@@ -93,11 +93,8 @@ function SignUp() {
         </Formik>
         <Box sx={{ mt: 2 }}>
           <GoogleLogin
-            clientId="YOUR_GOOGLE_CLIENT_ID"
-            buttonText="Sign Up with Google"
             onSuccess={handleGoogleLoginSuccess}
-            onFailure={handleGoogleLoginFailure}
-            cookiePolicy={'single_host_origin'}
+            onError={handleGoogleLoginFailure}
           />
         </Box>
         <Box sx={{ mt: 2 }}>
