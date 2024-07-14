@@ -12,8 +12,12 @@ function Login() {
 
   const handleGoogleLoginSuccess = async (response: any) => {
     try {
-        const serverResponse = await googleLoginAPI({ tokenId: response.tokenId });
-        console.log(serverResponse);
+        console.log(response)
+        const serverResponse = await googleLoginAPI(response);
+        const token = response.accessToken;
+        localStorage.setItem('token', token);
+        console.log(response);
+      navigate('/');
     } catch(error) {
       console.error(error);
     };

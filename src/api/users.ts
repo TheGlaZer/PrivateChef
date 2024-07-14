@@ -10,8 +10,8 @@ export const registerAPI = async (values: { email: string, password: string, nam
     return response.data;
 }
 
-export const googleLoginAPI = async (values: { tokenId: string }) => {
-    const response = await server.post('/users/googleLogin', values);
+export const googleLoginAPI = async (values: any) => {
+    const response = await server.post('/users/login-google', values);
     return response.data;
 }
 
