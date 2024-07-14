@@ -11,14 +11,14 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import logoImage from '../assets/Logo.png'
+import logoImage from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const isLoggedIn = !!localStorage.getItem('token');
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -36,26 +36,28 @@ function NavBar() {
   };
 
   const onLogout = () => {
-    navigate("/")
+    navigate('/');
     localStorage.removeItem('token');
     handleCloseUserMenu();
-  }
+  };
 
   return (
-    <AppBar position="static" sx={{bgcolor: "white"}}>
+    <AppBar position="static" sx={{ bgcolor: 'white' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Box
-  component="img"
-  sx={{ 
-    display: { xs: 'none', md: 'flex' },  
-    height: 'auto', // set height to auto
-    maxHeight: '50px', // set maximum height
-    width: 'auto' // set width to auto
-  }}
-  src={logoImage}
-/>
-
+          <Box sx={{ flexGrow: 1 }}>
+            <IconButton onClick={() => navigate('/')} sx={{ p: 0 }}>
+              <img src={logoImage} alt="Logo" style={{ height: 50 }} />
+            </IconButton>
+          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+            <Button
+              onClick={() => navigate('/recipes')}
+              sx={{ my: 2, color: 'black', display: 'block' }}
+            >
+              Recipes
+            </Button>
+          </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -85,52 +87,46 @@ function NavBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
+              <MenuItem onClick={() => navigate('/recipes')}>Recipes</MenuItem>
             </Menu>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block' }}
-              >
-                Recipes
-              </Button>
-          </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
+          {isLoggedIn && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar/>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">Account</Typography>
                 </MenuItem>
                 <MenuItem onClick={onLogout}>
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
-            </Menu>
-          </Box>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
-
-
   );
 }
+
 export default NavBar;
