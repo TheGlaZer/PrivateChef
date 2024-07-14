@@ -3,7 +3,7 @@ import { uploadIngredientImageAPI } from '../api/recipe';
 import React, { useEffect, useState } from 'react';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { Ingredient } from '@/models';
-import { RecpieForm } from '@/Pages/Home/RecipeForm';
+import { RecpieForm } from '@/Pages/Recipe/RecipeForm';
 
 interface ImageSelectorProps {
     setter: (value: React.SetStateAction<RecpieForm>) => void,

@@ -1,4 +1,4 @@
-import { RecpieForm } from '@/Pages/Home/RecipeForm';
+import { RecpieForm } from '@/Pages/Recipe/RecipeForm';
 import { Autocomplete, AutocompleteGetTagProps, Chip, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import RemoveIcon from "@mui/icons-material/RemoveCircleOutlineSharp";
