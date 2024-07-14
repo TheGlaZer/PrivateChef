@@ -4,19 +4,24 @@ import { Button, TextField, Container, Typography, Box, Link, Alert } from '@mui
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import { registerAPI } from '../../api/users';
+import { googleLoginAPI, registerAPI } from '../../api/users';
 import { useState } from 'react';
 
 function SignUp() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
-  const handleGoogleLoginSuccess = (response: any) => {
-    axios.post('/server/register', { token: response.tokenId }).then(response => {
-      console.log(response);
-    }).catch(error => {
-      console.error(error);
-    });
+  const handleGoogleLoginSuccess = async  (response: any) => {
+    try {
+      console.log(response)
+      const serverResponse = await googleLoginAPI(response);
+      const token = response.accessToken;
+      localStorage.setItem('token', token);
+      console.log(serverResponse);
+    navigate('/searchRecipe');
+  } catch(error) {
+    console.error(error);
+  };
   };
 
   const signUp = async (values: { email: string, password: string, name: string}, setSubmitting: (isSubmitting: boolean) => void) => {
