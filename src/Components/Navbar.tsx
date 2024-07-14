@@ -13,11 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import logoImage from '../assets/Logo.png'
-
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -36,6 +35,12 @@ function NavBar() {
     setAnchorElUser(null);
   };
 
+  const onLogout = () => {
+    navigate("/")
+    localStorage.removeItem('token');
+    handleCloseUserMenu();
+  }
+
   return (
     <AppBar position="static" sx={{bgcolor: "white"}}>
       <Container maxWidth="xl">
@@ -43,8 +48,7 @@ function NavBar() {
         <Box
   component="img"
   sx={{ 
-    display: { xs: 'none', md: 'flex' }, 
-    mr: 1, 
+    display: { xs: 'none', md: 'flex' },  
     height: 'auto', // set height to auto
     maxHeight: '50px', // set maximum height
     width: 'auto' // set width to auto
@@ -84,15 +88,12 @@ function NavBar() {
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
               <Button
-                key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'black', display: 'block' }}
               >
-                {page}
+                Recipes
               </Button>
-            ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -117,11 +118,12 @@ function NavBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">Account</Typography>
                 </MenuItem>
-              ))}
+                <MenuItem onClick={onLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

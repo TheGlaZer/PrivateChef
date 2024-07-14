@@ -17,7 +17,7 @@ function Login() {
         const token = response.accessToken;
         localStorage.setItem('token', token);
         console.log(response);
-      navigate('/');
+      navigate('/searchRecipe');
     } catch(error) {
       console.error(error);
     };
@@ -32,7 +32,7 @@ function Login() {
       localStorage.setItem('token', token);
       console.log(response);
       setSubmitting(false);
-      navigate('/');
+      navigate('/searchRecipe');
       // Navigate to another page or show success message here
     } catch (error: any) {
       console.error(error);

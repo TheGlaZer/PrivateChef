@@ -1,7 +1,7 @@
 import { Card, List, ListItem, ListSubheader } from '@mui/material'
 import React from 'react'
 import CloseOutlined from '@mui/icons-material/CloseOutlined'
-import { RecpieForm } from './RecipeForm'
+import { RecpieForm } from '../Recipe/RecipeForm'
 
 type ListDataContainerProps = {
     data: string[],

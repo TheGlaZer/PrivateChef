@@ -5,6 +5,8 @@ import { Box } from '@mui/material';
 import saladImage from './assets/salad.jpg'; // make sure to adjust the path to your image
 import MessageBox from './Components/MessageBox';
 import { Login, SignUp } from './Pages/Auth';
+import RecipeForm from './Pages/Recipe/RecipeForm';
+import SearchForRecipe from './Pages/Recipe/SearchForRecipe';
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
             <Route path="/" element={<Home/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path='/login' element={<Login/>} />
+            <Route path="/searchRecipe" element={<SearchForRecipe/>} />
           </Routes>
         </div>
         <MessageBox />
