@@ -3,7 +3,12 @@ import { Ingredient, Recipe, RecipeRequest } from '@/models';
 import { server } from '.';
 
 export const getRecipeAPI = async (recipe: RecipeRequest): Promise<Recipe> => {
-    const response = await server.post('/recipe', recipe);
+    const accessToken = localStorage.getItem('token');
+
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+    }
+    const response = await server.post('/recipe/generate', recipe, { headers });
     return response.data
 }
 
