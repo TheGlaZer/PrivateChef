@@ -15,7 +15,7 @@ function SignUp() {
     try {
       console.log(response)
       const serverResponse = await googleLoginAPI(response);
-      const token = response.accessToken;
+      const token = serverResponse.accessToken;
       localStorage.setItem('token', token);
       console.log(serverResponse);
     navigate('/searchRecipe');
