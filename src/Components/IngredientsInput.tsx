@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import InputItemsList from './InputItemsList';
-import { getIngredientsAPI } from '@/api/ingredient';
+import { getIngredientsAPI } from '../api/ingredient';
 
 interface IngredientsInputProps {
     chosenIngredients: string[];
-    setChosenIngredients: (value: React.SetStateAction<string[]>) => void;
+    setChosenIngredients: (value: string[]) => void;
+    label: string
 }
 
 
-export default function IngredientsInput({chosenIngredients, setChosenIngredients}: IngredientsInputProps) {
+export default function IngredientsInput({chosenIngredients, setChosenIngredients, label}: IngredientsInputProps) {
   const [ingredients, setIngredients] = useState<string[]>([]);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function IngredientsInput({chosenIngredients, setChosenIngredient
               availableItems={ingredients}
               chosenItems={chosenIngredients}
               setChosenItems={setChosenIngredients}
-              label='Add Ingredient...'
+              label={label}
             />
   );
 }

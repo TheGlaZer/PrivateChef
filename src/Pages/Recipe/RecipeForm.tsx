@@ -6,6 +6,7 @@ import InputItemsList from '../../Components/InputItemsList';
 import { useMessageContext } from '../../contexts/MessageBox';
 import { getIngredientsAPI } from '../../api/ingredient';
 import ImageSelector from '../../Components/ImageSelectorWithAi';
+import IngredientsInput from '../../Components/IngredientsInput';
 
 export type RecipeForm = {
   preferences?: string;
@@ -21,18 +22,10 @@ type RecipeFormProps = {
 
 export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
   const [formData, setFormData] = useState<RecipeForm>({ preferences: '', hasAllergies: false, allergies: [], ingredients: [] });
-  const [ingredients, setIngredients] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false); // State to track loading state
   console.log(formData.ingredients);
   console.log(formData.allergies);
 
-  useEffect(() => {
-    getIngredientsAPI().then(ingredients => {
-      setIngredients(ingredients.map(ingredient => ingredient.name));
-    }).catch(err => {
-      console.log(err);
-    });
-  }, []);
   const { setErrorMessage } = useMessageContext();
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,19 +72,17 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
                 label="Allergic to any food?"
               />
               {formData.hasAllergies && (
-                <InputItemsList
-                  availableItems={ingredients}
-                  chosenItems={formData.allergies}
-                  setChosenItems={(newAllergies) => setFormData({ ...formData, allergies: newAllergies })}
+                <IngredientsInput
+                  chosenIngredients={formData.allergies}
+                  setChosenIngredients={(newAllergies) => setFormData({ ...formData, allergies: newAllergies })}
                   label='Add Allergy...'
                 />
               )}
             </Grid>
             <Grid item xs={12}>
-              <InputItemsList
-                availableItems={ingredients}
-                chosenItems={formData.ingredients}
-                setChosenItems={(newIngredients) => setFormData({ ...formData, ingredients: newIngredients })}
+              <IngredientsInput
+                chosenIngredients={formData.ingredients}
+                setChosenIngredients={(newIngredients) => setFormData({ ...formData, ingredients: newIngredients })}
                 label='Add Ingredient...'
               />
             </Grid>

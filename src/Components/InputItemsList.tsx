@@ -5,7 +5,7 @@ import RemoveIcon from "@mui/icons-material/RemoveCircleOutlineSharp";
 type InputItemsListProps = {
   availableItems: string[];
   chosenItems: string[];
-  setChosenItems: (value: React.SetStateAction<any>) => void;
+  setChosenItems: (value: string[]) => void;
   label: string;
 };
 
