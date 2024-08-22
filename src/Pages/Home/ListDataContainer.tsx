@@ -1,12 +1,12 @@
 import { Card, List, ListItem, ListSubheader } from '@mui/material'
 import React from 'react'
 import CloseOutlined from '@mui/icons-material/CloseOutlined'
-import { RecpieForm } from '../Recipe/RecipeForm'
+import { RecipeForm } from '../Recipe/RecipeForm'
 
 type ListDataContainerProps = {
     data: string[],
     title: string,
-    setter: (value: React.SetStateAction<RecpieForm>) => void,
+    setter: (value: React.SetStateAction<RecipeForm>) => void,
     prop: "allergies" | "ingredients",
 }
 

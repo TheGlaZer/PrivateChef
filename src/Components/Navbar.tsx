@@ -57,6 +57,18 @@ function NavBar() {
             >
               Recipes
             </Button>
+            <Button
+              onClick={() => navigate('/profile')}
+              sx={{ my: 2, color: 'black', display: 'block' }}
+            >
+              Profile
+            </Button>
+            <Button
+              onClick={() => navigate('/searchRecipe')}
+              sx={{ my: 2, color: 'black', display: 'block' }}
+            >
+              Search
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton

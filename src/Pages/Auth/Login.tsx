@@ -6,8 +6,10 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { googleLoginAPI, loginAPI } from '../../api/users';
 import { useState } from 'react';
+import { useUser } from '../../Providers/UserProvider';
 
 function Login() {
+  const { setUser } = useUser(); // Get the setUser function from the context
   const [serverError, setServerError] = useState<string | null>(null);
 
   const handleGoogleLoginSuccess = async (response: any) => {
@@ -16,6 +18,7 @@ function Login() {
         const serverResponse = await googleLoginAPI(response);
         const token = serverResponse.accessToken;
         localStorage.setItem('token', token);
+        setUser(response.user);
         console.log(response);
       navigate('/searchRecipe');
     } catch(error) {
@@ -30,6 +33,7 @@ function Login() {
       console.log(response)
       const token = response.accessToken;
       localStorage.setItem('token', token);
+      setUser(response.user);
       console.log(response);
       setSubmitting(false);
       navigate('/searchRecipe');

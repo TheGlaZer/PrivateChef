@@ -7,7 +7,7 @@ import { useMessageContext } from '../../contexts/MessageBox';
 import { getIngredientsAPI } from '../../api/ingredient';
 import ImageSelector from '../../Components/ImageSelectorWithAi';
 
-export type RecpieForm = {
+export type RecipeForm = {
   preferences?: string;
   hasAllergies: boolean;
   allergies: string[];
@@ -20,9 +20,11 @@ type RecipeFormProps = {
 };
 
 export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
-  const [formData, setFormData] = useState<RecpieForm>({ preferences: '', hasAllergies: false, allergies: [], ingredients: [] });
+  const [formData, setFormData] = useState<RecipeForm>({ preferences: '', hasAllergies: false, allergies: [], ingredients: [] });
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false); // State to track loading state
+  console.log(formData.ingredients);
+  console.log(formData.allergies);
 
   useEffect(() => {
     getIngredientsAPI().then(ingredients => {
@@ -80,8 +82,7 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
                 <InputItemsList
                   availableItems={ingredients}
                   chosenItems={formData.allergies}
-                  prop='allergies'
-                  setter={setFormData}
+                  setChosenItems={(newAllergies) => setFormData({ ...formData, allergies: newAllergies })}
                   label='Add Allergy...'
                 />
               )}
@@ -90,8 +91,7 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
               <InputItemsList
                 availableItems={ingredients}
                 chosenItems={formData.ingredients}
-                prop='ingredients'
-                setter={setFormData}
+                setChosenItems={(newIngredients) => setFormData({ ...formData, ingredients: newIngredients })}
                 label='Add Ingredient...'
               />
             </Grid>
