@@ -1,42 +1,53 @@
 import React, { useState } from 'react';
 import { Box, Button, Container, TextField, Typography, Paper } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useUser } from '../../Providers/UserProvider'; // Import the useUser hook
 import axios from 'axios';
+import { useUser } from '../../Providers/UserProvider';
+import IngredientsInput from '../../Components/IngredientsInput';
+import ImagePicker from '../../Components/ImagePicker'; // Import the ImagePicker component
 
 function UserProfile() {
   const theme = useTheme();
-  const { user, setUser, logout } = useUser(); // Get the user and setUser functions from the context
+  const { user, setUser, logout } = useUser();
   const [fullName, setFullName] = useState(user?.fullName || '');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState(user?.email || '');
+  const [allergies, setAllergies] = useState<string[]>(user?.allergies || []);
+  const [profileImage, setProfileImage] = useState<File | null>(null); // New state for the profile image
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
+  console.log(`http://localhost:3000${user?.image}`)
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
-      return;
-    }
+    
     try {
-      const response = await axios.put(`/api/users/profile`, {
-        fullName,
-        password,
-      }, {
-        headers: { Authorization: `Bearer ${user?.accessToken}` },
-      });
-  
-      // Ensure that all required fields are provided
-      if (user && user.id) {
-        setUser({
-          ...user,
-          fullName,
-        });
+      const formData = new FormData();
+      formData.append('fullName', fullName);
+      formData.append('email', email);
+      formData.append('allergies', JSON.stringify(allergies));
+
+      if (profileImage) {
+        formData.append('file', profileImage); // Add the profile image to the form data
+      }
+
+      const response = await axios.put(
+        `/api/users/profile`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`,
+            'Content-Type': 'multipart/form-data', // Important for handling file uploads
+          },
+        }
+      );
+
+      if (user?.id) {
+        setUser({ ...user, fullName, email, allergies });
         setSuccessMessage('Profile updated successfully!');
         setErrorMessage('');
       } else {
-        setErrorMessage('User data is invalid. Please try again.');
+        setErrorMessage('User data is incomplete. Please try again.');
       }
     } catch (error) {
       setErrorMessage('Failed to update profile. Please try again.');
@@ -59,20 +70,27 @@ function UserProfile() {
           />
           <TextField
             fullWidth
-            label="New Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             margin="normal"
           />
-          <TextField
-            fullWidth
-            label="Confirm Password"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            margin="normal"
+
+          {/* ImagePicker component for selecting the profile image */}
+          <ImagePicker
+            name="profileImage"
+            height="100px"
+            width="100px"
+            defaultValue={`http://localhost:3000${user?.image}`}
+            onChange={(files: FileList) => setProfileImage(files[0])} // Update profileImage state
           />
+
+          <IngredientsInput
+            chosenIngredients={allergies}
+            setChosenIngredients={setAllergies}
+            label="Manage Allergies"
+          />
+
           {errorMessage && (
             <Typography color="error" sx={{ mt: 2 }}>
               {errorMessage}
