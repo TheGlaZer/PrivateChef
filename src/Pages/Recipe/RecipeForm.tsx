@@ -7,6 +7,7 @@ import { useMessageContext } from '../../contexts/MessageBox';
 import { getIngredientsAPI } from '../../api/ingredient';
 import ImageSelector from '../../Components/ImageSelectorWithAi';
 import IngredientsInput from '../../Components/IngredientsInput';
+import { useUser } from '../../Providers/UserProvider';
 
 export type RecipeForm = {
   preferences?: string;
@@ -21,7 +22,8 @@ type RecipeFormProps = {
 };
 
 export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
-  const [formData, setFormData] = useState<RecipeForm>({ preferences: '', hasAllergies: false, allergies: [], ingredients: [] });
+  const { user } = useUser();
+  const [formData, setFormData] = useState<RecipeForm>({ preferences: '', hasAllergies: user?.allergies && user.allergies.length > 0 || false, allergies: user?.allergies || [], ingredients: [] });
   const [loading, setLoading] = useState<boolean>(false); // State to track loading state
   console.log(formData.ingredients);
   console.log(formData.allergies);
