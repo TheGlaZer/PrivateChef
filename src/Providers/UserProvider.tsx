@@ -39,9 +39,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const updateLoggedUser = async () => {
-    const user = await getUser();
-    localStorage.setItem('user', JSON.stringify(user));
-    setUser(user);
+    try{
+        const user = await getUser();
+        localStorage.setItem('user', JSON.stringify(user));
+        setUser(user);
+
+    }
+    catch (error) {
+        console.error(error);
+    }
 }
 
 
