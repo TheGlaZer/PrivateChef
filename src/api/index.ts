@@ -2,7 +2,18 @@ import axios from "axios";
 
 const serverUrl = 'http://localhost:3000';
 
-export const server = axios.create({
+const server = axios.create({
     baseURL: serverUrl,
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
+
+server.interceptors.request.use((config) => {
+    const accessToken = localStorage.getItem('token');
+    config.headers.Authorization = accessToken && `Bearer ${accessToken}`;
+    return config;
+});
+
+export default server;
 

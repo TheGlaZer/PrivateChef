@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useUser } from '../../Providers/UserProvider';
 import IngredientsInput from '../../Components/IngredientsInput';
 import ImagePicker from '../../Components/ImagePicker'; // Import the ImagePicker component
+import { updateProfileAPI } from '../../api/users';
 
 function UserProfile() {
   const theme = useTheme();
@@ -16,7 +17,6 @@ function UserProfile() {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  console.log(`http://localhost:3000${user?.image}`)
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -25,22 +25,14 @@ function UserProfile() {
       const formData = new FormData();
       formData.append('fullName', fullName);
       formData.append('email', email);
+      console.log(JSON.stringify(allergies))
       formData.append('allergies', JSON.stringify(allergies));
 
       if (profileImage) {
         formData.append('file', profileImage); // Add the profile image to the form data
       }
 
-      const response = await axios.put(
-        `/api/users/profile`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.accessToken}`,
-            'Content-Type': 'multipart/form-data', // Important for handling file uploads
-          },
-        }
-      );
+      const response = await updateProfileAPI(formData);
 
       if (user?.id) {
         setUser({ ...user, fullName, email, allergies });

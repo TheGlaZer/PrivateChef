@@ -1,4 +1,4 @@
-import { server } from ".";
+import server from ".";
 
 export const loginAPI = async (values: { email: string, password: string }) => {
     const response = await server.post('/users/login', values);
@@ -7,6 +7,14 @@ export const loginAPI = async (values: { email: string, password: string }) => {
 
 export const registerAPI = async (formData: FormData) => {
     const response = await server.post('/users/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }});
+    return response.data;
+}
+
+export const updateProfileAPI = async (formData: FormData) => {
+    const response = await server.put('/users/profile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }});
