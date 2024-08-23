@@ -9,7 +9,7 @@ import { updateProfileAPI } from '../../api/users';
 
 function UserProfile() {
   const theme = useTheme();
-  const { user, setUser, logout } = useUser();
+  const { user, updateUser, logout } = useUser();
   const [fullName, setFullName] = useState(user?.fullName || '');
   const [email, setEmail] = useState(user?.email || '');
   const [allergies, setAllergies] = useState<string[]>(user?.allergies || []);
@@ -32,15 +32,7 @@ function UserProfile() {
         formData.append('file', profileImage); // Add the profile image to the form data
       }
 
-      const response = await updateProfileAPI(formData);
-
-      if (user?.id) {
-        setUser({ ...user, fullName, email, allergies });
-        setSuccessMessage('Profile updated successfully!');
-        setErrorMessage('');
-      } else {
-        setErrorMessage('User data is incomplete. Please try again.');
-      }
+      await updateUser(formData);
     } catch (error) {
       setErrorMessage('Failed to update profile. Please try again.');
     }

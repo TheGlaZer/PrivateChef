@@ -1,3 +1,4 @@
+import { updateProfileAPI } from '../api/users';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define the shape of the user data
@@ -16,6 +17,7 @@ interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => void;
   logout: () => void;
+  updateUser: (userData: FormData) => void;
 }
 
 // Create the context with an initial value
@@ -42,8 +44,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // You can also invalidate the session on the server here if needed
   };
 
+  const updateUser = async (userData: FormData) => {
+    const response = await updateProfileAPI(userData);
+    
+    setUser(response.user);
+}
+
   return (
-    <UserContext.Provider value={{ user, setUser, logout }}>
+    <UserContext.Provider value={{ user, setUser, logout, updateUser }}>
       {children}
     </UserContext.Provider>
   );
