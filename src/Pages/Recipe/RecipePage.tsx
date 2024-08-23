@@ -1,14 +1,18 @@
-import { postRecipe } from '../../api/recipe';
-import { Recipe } from '@/models';
-import { Save as SaveIcon } from '@mui/icons-material';
-import { Typography, List, ListItem, ListItemText, Divider, Box, useTheme, IconButton } from '@mui/material';
+import { postRecipe, getRecipeAPI } from '../../api/recipe';
+import { Recipe } from '../../models';
+import { Save as SaveIcon, Refresh as RefreshIcon } from '@mui/icons-material';
+import { Typography, List, ListItem, ListItemText, CircularProgress, Divider, Box, useTheme, IconButton } from '@mui/material';
+import { useState } from 'react';
 
 type RecipePageProps = {
   recipe: Recipe | null;
+  isNew: boolean;
+  onRegenerate: () => Promise<void>; // Add a prop to handle regeneration
 };
 
-export default function RecipePage({ recipe }: RecipePageProps) {
+export default function RecipePage({ recipe, isNew = true, onRegenerate }: RecipePageProps) {
   const theme = useTheme();
+  const [loading, setLoading] = useState<boolean>(false);
 
   if (!recipe) return <Typography variant="h5" color="error" textAlign="center">Error Fetching Recipe</Typography>;
 
@@ -24,6 +28,18 @@ export default function RecipePage({ recipe }: RecipePageProps) {
     }
   };
 
+  const handleRegenerateRecipe = async () => {
+    setLoading(true);
+    try {
+      await onRegenerate();
+    } catch (error) {
+      console.error('Error regenerating recipe:', error);
+      alert('Failed to regenerate recipe. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', p: 2 }}>
       <Box sx={{ flex: 1, pr: 2 }}>
@@ -31,9 +47,20 @@ export default function RecipePage({ recipe }: RecipePageProps) {
           <Typography variant="h4" component="h1" gutterBottom color={theme.palette.primary.main}>
             {title}
           </Typography>
-          <IconButton color="primary" onClick={handleSaveRecipe}>
-            <SaveIcon />
+          <Box>
+            {isNew && (
+              <Box>
+              <IconButton color="primary" onClick={handleSaveRecipe}>
+                <SaveIcon />
+              </IconButton>
+              
+            <IconButton color="secondary" onClick={handleRegenerateRecipe} disabled={loading}>
+            <RefreshIcon />
           </IconButton>
+      {loading && <CircularProgress size={24} sx={{ ml: 2 }} />}
+          </Box>
+            )}
+          </Box>
         </Box>
 
         <Box sx={{ mt: 2 }}>

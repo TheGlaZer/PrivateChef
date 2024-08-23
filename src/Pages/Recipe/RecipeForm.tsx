@@ -1,32 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Checkbox, Button, FormControlLabel, FormGroup, CircularProgress, Typography, Grid, Box, Paper } from '@mui/material';
-import { getRecipeAPI } from '../../api/recipe';
+import { Checkbox, Button, FormControlLabel, FormGroup, CircularProgress, Typography, Grid, Paper } from '@mui/material';
 import { Recipe, RecipeRequest } from '../../models/index';
-import { useMessageContext } from '../../contexts/MessageBox';
 import ImageSelector from '../../Components/ImageSelectorWithAi';
 import IngredientsInput from '../../Components/IngredientsInput';
-import { useUser } from '../../Providers/UserProvider';
-
-export type RecipeForm = {
-  preferences?: string;
-  hasAllergies: boolean;
-  allergies: string[];
-  ingredients: string[];
-};
+import { RecipeRequestForm } from './SearchForRecipe';
 
 type RecipeFormProps = {
   setRecipe: React.Dispatch<React.SetStateAction<Recipe | null>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  formData: RecipeRequestForm;
+  setFormData: React.Dispatch<React.SetStateAction<RecipeRequestForm>>;
+  handleRecipe: () => Promise<void>;
 };
 
-export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
-  const { user } = useUser();
-  const [formData, setFormData] = useState<RecipeForm>({ preferences: '', hasAllergies: user?.allergies && user.allergies.length > 0 || false, allergies: user?.allergies || [], ingredients: [] });
+export default function RecipeForm({ setRecipe, setOpen, formData, setFormData, handleRecipe }: RecipeFormProps) {
   const [loading, setLoading] = useState<boolean>(false); // State to track loading state
-  console.log(formData.ingredients);
-  console.log(formData.allergies);
-
-  const { setErrorMessage } = useMessageContext();
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -40,22 +28,6 @@ export default function RecipeForm({ setRecipe, setOpen }: RecipeFormProps) {
     setLoading(true);
     await handleRecipe();
     setLoading(false);
-  };
-
-  const handleRecipe = async () => {
-    const { allergies, ingredients } = formData;
-    const recipeRequest: RecipeRequest = {
-      allergies,
-      ingredients,
-    };
-    try {
-      const recipe = await getRecipeAPI(recipeRequest);
-      setRecipe(recipe);
-      setOpen(true);
-    } catch (err) {
-      console.log(err);
-      setErrorMessage('Error getting a recipe');
-    }
   };
 
   return (

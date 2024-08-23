@@ -12,6 +12,11 @@ export const postRecipe = async (recipe: Recipe): Promise<Recipe> => {
     return response.data
 }
 
+export const getRecipesOfUser = async (): Promise<Recipe[]> => {
+    const response = await server.get('/recipe');
+    return response.data
+}
+
 export const uploadIngredientImageAPI = async (file: File): Promise<Ingredient[]> => {
     const formData = new FormData();
     formData.append('file', file);

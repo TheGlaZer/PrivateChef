@@ -1,7 +1,8 @@
 export type RecipeRequest = {
     allergies: string[];
     ingredients: string[];
-
+    isRegenerate?: boolean;
+    lastRecipeName?: string;
 }
 export type Recipe = {
     title: string,
