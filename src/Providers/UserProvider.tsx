@@ -30,14 +30,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   useEffect(() => {
-    localStorage.getItem('accessToken') && updateLoggedUser();
+    if (user) {
+        updateLoggedUser();
+    }
+    else {
+        localStorage.removeItem('user');
+    }
   }, []);
 
   const updateLoggedUser = async () => {
-    const response = await getUser();
-    console.log(response);
     const user = await getUser();
-
+    localStorage.setItem('user', JSON.stringify(user));
     setUser(user);
 }
 
@@ -45,6 +48,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
     // You can also invalidate the session on the server here if needed
   };
 
