@@ -10,7 +10,6 @@ function UserProfile() {
   const theme = useTheme();
   const { user, updateUser, logout } = useUser();
   const [fullName, setFullName] = useState(user?.fullName || '');
-  const [email, setEmail] = useState(user?.email || '');
   const [allergies, setAllergies] = useState<string[]>(user?.allergies || []);
   const [profileImage, setProfileImage] = useState<File | null>(null); // New state for the profile image
   const [errorMessage, setErrorMessage] = useState('');
@@ -23,7 +22,6 @@ function UserProfile() {
     try {
       const formData = new FormData();
       formData.append('fullName', fullName);
-      formData.append('email', email);
       console.log(JSON.stringify(allergies))
       formData.append('allergies', JSON.stringify(allergies));
 
@@ -50,13 +48,6 @@ function UserProfile() {
             label="Full Name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             margin="normal"
           />
 
