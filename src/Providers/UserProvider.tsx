@@ -1,14 +1,11 @@
-import { updateProfileAPI } from '../api/users';
+import { getUser, googleLoginAPI, loginAPI, updateProfileAPI } from '../api/users';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define the shape of the user data
 interface User {
-  id: string;
   fullName: string;
   email: string;
   image?: string;
-  accessToken: string;
-  refreshToken: string;
   allergies?: string[];
 }
 
@@ -18,6 +15,8 @@ interface UserContextProps {
   setUser: (user: User | null) => void;
   logout: () => void;
   updateUser: (userData: FormData) => void;
+  loginUser: (values: { email: string, password: string }) => void;
+  googleLogin: (response: any) => void;
 }
 
 // Create the context with an initial value
@@ -31,18 +30,35 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('user');
-    }
-  }, [user]);
+    localStorage.getItem('accessToken') && updateLoggedUser();
+  }, []);
+
+  const updateLoggedUser = async () => {
+    const response = await getUser();
+    console.log(response);
+    const user = await getUser();
+
+    setUser(user);
+}
+
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    localStorage.removeItem('accessToken');
     // You can also invalidate the session on the server here if needed
   };
+
+  const loginUser = async (values: { email: string, password: string }) => {
+    const response = await loginAPI(values);
+    localStorage.setItem('accessToken', response.accessToken);
+    setUser(response.user);
+  }
+  
+  const googleLogin =  async (response: any) => {
+      const serverResponse = await googleLoginAPI(response);
+      localStorage.setItem('accessToken', serverResponse.accessToken);
+      setUser(response.user);
+  }
 
   const updateUser = async (userData: FormData) => {
     const response = await updateProfileAPI(userData);
@@ -51,7 +67,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 }
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout, updateUser }}>
+    <UserContext.Provider value={{ user, setUser, logout, updateUser, loginUser , googleLogin}}>
       {children}
     </UserContext.Provider>
   );

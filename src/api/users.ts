@@ -5,6 +5,11 @@ export const loginAPI = async (values: { email: string, password: string }) => {
     return response.data;
 }
 
+export const getUser = async () => {
+    const response = await server.get('/users/profile');
+    return response.data;
+}
+
 export const registerAPI = async (formData: FormData) => {
     const response = await server.post('/users/register', formData, {
         headers: {
