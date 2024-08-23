@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useUser } from '../../Providers/UserProvider';
 import IngredientsInput from '../../Components/IngredientsInput';
 import ImagePicker from '../../Components/ImagePicker'; // Import the ImagePicker component
-import { updateProfileAPI } from '../../api/users';
 
 function UserProfile() {
   const theme = useTheme();
@@ -33,6 +32,7 @@ function UserProfile() {
       }
 
       await updateUser(formData);
+      setSuccessMessage('Profile updated successfully!');
     } catch (error) {
       setErrorMessage('Failed to update profile. Please try again.');
     }
