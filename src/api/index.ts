@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverUrl = 'http://localhost:3000';
+export const serverUrl = 'https://localhost:443';
 
 const server = axios.create({
     baseURL: serverUrl,

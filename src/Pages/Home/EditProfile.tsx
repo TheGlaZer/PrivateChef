@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { useUser } from '../../Providers/UserProvider';
 import IngredientsInput from '../../Components/IngredientsInput';
 import ImagePicker from '../../Components/ImagePicker'; // Import the ImagePicker component
+import { serverUrl } from '../../api';
 
 function EditProfile() {
   const theme = useTheme();
@@ -62,7 +63,7 @@ function EditProfile() {
             name="profileImage"
             height="100px"
             width="100px"
-            defaultValue={`http://localhost:3000${user?.image}`}
+            defaultValue={`${serverUrl}${user?.image}`}
             onChange={(files: FileList) => setProfileImage(files[0])} // Update profileImage state
           />
 

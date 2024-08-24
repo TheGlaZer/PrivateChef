@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import logoImage from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../Providers/UserProvider';
+import { serverUrl } from '../api';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ function NavBar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar sx={{ width: 40, height: 40 }} src={`http://localhost:3000${user?.image}`}></Avatar>
+                  <Avatar sx={{ width: 40, height: 40 }} src={`${serverUrl}${user?.image}`}></Avatar>
                 </IconButton>
               </Tooltip>
               <Menu

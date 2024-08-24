@@ -3,7 +3,7 @@ import { Box, Tabs, Tab, Typography, Grid, Card, CardActionArea, CardMedia, Card
 import EditProfile from './EditProfile'; // Assume you have a UserForm component for updating user details
 import { Recipe } from '../../models';
 import RecipePage from '../Recipe/RecipePage';
-import server from '../../api';
+import server, { serverUrl } from '../../api';
 import { useMessageContext } from '../../contexts/MessageBox';
 
 function UserProfile() {
@@ -60,7 +60,7 @@ function UserProfile() {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={`http://localhost:3000${recipe.imageURL}`}
+                    image={`${serverUrl}${recipe.imageURL}`}
                     alt={recipe.title}
                   />
                   <CardContent>

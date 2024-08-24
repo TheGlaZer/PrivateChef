@@ -1,3 +1,4 @@
+import { serverUrl } from '../../api';
 import { postRecipe, getRecipeAPI } from '../../api/recipe';
 import { Recipe } from '../../models';
 import { Save as SaveIcon, Refresh as RefreshIcon } from '@mui/icons-material';
@@ -91,7 +92,7 @@ export default function RecipePage({ recipe, isNew = true, onRegenerate }: Recip
       {imageURL && (
         <Box sx={{ flex: '0 0 300px', display: 'flex', justifyContent: 'center', alignItems: 'center', ml: 2 }}>
           <img
-            src={`http://localhost:3000${imageURL}`}
+            src={`${serverUrl}${imageURL}`}
             alt={title}
             style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'cover', borderRadius: '8px' }}
           />
