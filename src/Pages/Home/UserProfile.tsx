@@ -60,7 +60,7 @@ function UserProfile() {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={recipe.imageURL}
+                    image={`http://localhost:3000${recipe.imageURL}`}
                     alt={recipe.title}
                   />
                   <CardContent>

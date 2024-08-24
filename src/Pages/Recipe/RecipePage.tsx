@@ -14,7 +14,7 @@ export default function RecipePage({ recipe, isNew = true, onRegenerate }: Recip
   const theme = useTheme();
   const [loading, setLoading] = useState<boolean>(false);
 
-  if (!recipe) return <Typography variant="h5" color="error" textAlign="center">Error Fetching Recipe</Typography>;
+  if (!recipe) return null;
 
   const { products, instructions, title, imageURL } = recipe;
 
@@ -91,7 +91,7 @@ export default function RecipePage({ recipe, isNew = true, onRegenerate }: Recip
       {imageURL && (
         <Box sx={{ flex: '0 0 300px', display: 'flex', justifyContent: 'center', alignItems: 'center', ml: 2 }}>
           <img
-            src={imageURL}
+            src={`http://localhost:3000${imageURL}`}
             alt={title}
             style={{ maxWidth: '100%', maxHeight: '400px', objectFit: 'cover', borderRadius: '8px' }}
           />

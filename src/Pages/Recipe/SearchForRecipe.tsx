@@ -32,8 +32,6 @@ function SearchForRecipe() {
 
   const onRecipeRequest = async (isRegenerate: boolean = false) => { 
     const { allergies, ingredients } = formData;
-    console.log(recipe?.title)
-    console.log(isRegenerate)
     const recipeRequest: RecipeRequest = {
       allergies,
       ingredients,
@@ -52,7 +50,7 @@ function SearchForRecipe() {
 
   return (
     <Container maxWidth="lg" sx={{ minHeight: '100vh', py: 4 }}>
-      <RecipeForm setOpen={setOpen} setRecipe={setRecipe} formData={formData} setFormData={setFormData} handleRecipe={onRecipeRequest} />
+      <RecipeForm formData={formData} setFormData={setFormData} handleRecipe={onRecipeRequest} />
       <Dialog open={open} onClose={handleClose} maxWidth="md" scroll="paper">
         <Card sx={{ m: 0, p: 0, overflow: 'auto', maxHeight: '80vh' }}>
           <CardContent sx={{ p: 2 }}>

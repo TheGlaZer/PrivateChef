@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Checkbox, Button, FormControlLabel, FormGroup, CircularProgress, Typography, Grid, Paper } from '@mui/material';
-import { Recipe, RecipeRequest } from '../../models/index';
 import ImageSelector from '../../Components/ImageSelectorWithAi';
 import IngredientsInput from '../../Components/IngredientsInput';
 import { RecipeRequestForm } from './SearchForRecipe';
 
 type RecipeFormProps = {
-  setRecipe: React.Dispatch<React.SetStateAction<Recipe | null>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   formData: RecipeRequestForm;
   setFormData: React.Dispatch<React.SetStateAction<RecipeRequestForm>>;
   handleRecipe: () => Promise<void>;
 };
 
-export default function RecipeForm({ setRecipe, setOpen, formData, setFormData, handleRecipe }: RecipeFormProps) {
+export default function RecipeForm({formData, setFormData, handleRecipe }: RecipeFormProps) {
   const [loading, setLoading] = useState<boolean>(false); // State to track loading state
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
