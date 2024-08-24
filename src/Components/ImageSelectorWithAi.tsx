@@ -3,10 +3,10 @@ import { uploadIngredientImageAPI } from '../api/recipe';
 import React, { useEffect, useState } from 'react';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { Ingredient } from '@/models';
-import { RecpieForm } from '@/Pages/Recipe/RecipeForm';
+import { RecipeRequestForm } from '../Pages/Recipe/SearchForRecipe';
 
 interface ImageSelectorProps {
-    setter: (value: React.SetStateAction<RecpieForm>) => void,
+    setter: (value: React.SetStateAction<RecipeRequestForm>) => void,
 }
 
 const ImageSelector: React.FC<ImageSelectorProps> = ({ setter }: ImageSelectorProps) => {
@@ -28,7 +28,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ setter }: ImageSelectorPr
             setLoading(true)
             const data = await uploadIngredientImageAPI(file)
             const generatedIngredients = data.map(ingredient => ingredient.name)
-            setter((formData: RecpieForm) => ({
+            setter((formData: RecipeRequestForm) => ({
                 ...formData,
                 ingredients: [...formData.ingredients, ...generatedIngredients]
             }))

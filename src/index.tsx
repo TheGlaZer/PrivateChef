@@ -7,6 +7,7 @@ import { ThemeProvider } from '@emotion/react';
 import {theme} from './theme/theme'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { CLIENT_ID } from './consts';
+import { UserProvider } from './Providers/UserProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,9 +16,11 @@ root.render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId={CLIENT_ID}>
     <ThemeProvider theme={theme}>
+    <UserProvider>
     <MessageProvider>
       <App />
     </MessageProvider>
+    </UserProvider>
     </ThemeProvider>
     </GoogleOAuthProvider>
   </React.StrictMode>

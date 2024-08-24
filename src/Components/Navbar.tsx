@@ -13,12 +13,15 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import logoImage from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../Providers/UserProvider';
+import { serverUrl } from '../api';
 
 function NavBar() {
   const navigate = useNavigate();
+  const { user } = useUser();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const isLoggedIn = !!localStorage.getItem('token');
+  const isLoggedIn = !!localStorage.getItem('accessToken');
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -37,7 +40,7 @@ function NavBar() {
 
   const onLogout = () => {
     navigate('/');
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
     handleCloseUserMenu();
   };
 
@@ -57,45 +60,25 @@ function NavBar() {
             >
               Recipes
             </Button>
-          </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
+            <Button
+              onClick={() => navigate('/profile')}
+              sx={{ my: 2, color: 'black', display: 'block' }}
             >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
+              Profile
+            </Button>
+            <Button
+              onClick={() => navigate('/searchRecipe')}
+              sx={{ my: 2, color: 'black', display: 'block' }}
             >
-              <MenuItem onClick={() => navigate('/recipes')}>Recipes</MenuItem>
-            </Menu>
+              Search
+            </Button>
           </Box>
 
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar/>
+                  <Avatar sx={{ width: 40, height: 40 }} src={`${serverUrl}${user?.image}`}></Avatar>
                 </IconButton>
               </Tooltip>
               <Menu

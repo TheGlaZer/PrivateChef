@@ -1,51 +1,51 @@
+import React, { useState } from 'react';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { Button, TextField, Container, Typography, Box, Link, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
 import { googleLoginAPI, registerAPI } from '../../api/users';
-import { useState } from 'react';
+import ImagePicker from '../../Components/ImagePicker'; // Import the ImagePicker component
 
 function SignUp() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  
-  const handleGoogleLoginSuccess = async  (response: any) => {
+  const navigate = useNavigate();
+
+  const handleGoogleLoginSuccess = async (response: any) => {
     try {
-      console.log(response)
       const serverResponse = await googleLoginAPI(response);
       const token = serverResponse.accessToken;
       localStorage.setItem('token', token);
-      console.log(serverResponse);
-    navigate('/searchRecipe');
-  } catch(error) {
-    console.error(error);
-  };
+      navigate('/searchRecipe');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const signUp = async (values: { email: string, password: string, name: string}, setSubmitting: (isSubmitting: boolean) => void) => {
+  const signUp = async (values: any, setSubmitting: (isSubmitting: boolean) => void) => {
+    const formData = new FormData();
+    formData.append('email', values.email);
+    formData.append('password', values.password);
+    formData.append('name', values.name);
+
+    if (values.profileImage && values.profileImage.length > 0) {
+      formData.append('file', values.profileImage[0]);
+    }
+
     try {
-      const response = await registerAPI(values);
-      console.log(response);
+      const response = await registerAPI(formData);
       setSuccessMessage('Successfully signed up! Redirecting to login...');
       setSubmitting(false);
       setTimeout(() => {
         navigate('/login');
       }, 3000);
-      // Navigate to another page or show success message here
     } catch (error: any) {
       console.error(error);
       setServerError(error.response?.data?.message || 'An error occurred. Please try again.');
       setSubmitting(false);
     }
-  }
-
-
-  const navigate = useNavigate();
-
-  const handleGoogleLoginFailure = () => {
-    console.error("Google login failed");
   };
 
   return (
@@ -65,17 +65,18 @@ function SignUp() {
           </Alert>
         )}
         <Formik
-          initialValues={{ name: '', email: '', password: '' }}
+          initialValues={{ name: '', email: '', password: '', profileImage: null }}
           validationSchema={Yup.object({
             name: Yup.string().required('Required'),
             email: Yup.string().email('Invalid email address').required('Required'),
-            password: Yup.string().required('Required')
+            password: Yup.string().required('Required'),
+            profileImage: Yup.mixed().nullable(),
           })}
           onSubmit={(values, { setSubmitting }) => {
             signUp(values, setSubmitting);
           }}
         >
-          {({ errors, touched, isSubmitting, isValid }) => (
+          {({ errors, touched, isSubmitting, isValid, setFieldValue }) => (
             <Form>
               <Field
                 name="email"
@@ -98,7 +99,6 @@ function SignUp() {
                 error={touched.password && Boolean(errors.password)}
                 helperText={touched.password && errors.password}
               />
-              
               <Field
                 name="name"
                 as={TextField}
@@ -109,6 +109,13 @@ function SignUp() {
                 autoFocus
                 error={touched.name && Boolean(errors.name)}
                 helperText={touched.name && errors.name}
+              />
+              <ImagePicker
+                name="profileImage"
+                height="100px"
+                width="100px"
+                defaultValue={null}
+                onChange={(file: FileList) => setFieldValue('profileImage', file)}
               />
               <Button
                 type="submit"
@@ -126,7 +133,7 @@ function SignUp() {
         <Box sx={{ mt: 2 }}>
           <GoogleLogin
             onSuccess={handleGoogleLoginSuccess}
-            onError={handleGoogleLoginFailure}
+            onError={() => console.error("Google login failed")}
           />
         </Box>
         <Box sx={{ mt: 2 }}>
@@ -137,6 +144,6 @@ function SignUp() {
       </Box>
     </Container>
   );
-};
+}
 
 export default SignUp;

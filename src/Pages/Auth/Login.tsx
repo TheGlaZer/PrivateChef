@@ -6,31 +6,24 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { googleLoginAPI, loginAPI } from '../../api/users';
 import { useState } from 'react';
+import { useUser } from '../../Providers/UserProvider';
 
 function Login() {
+  const { loginUser, googleLogin } = useUser(); // Get the setUser function from the context
   const [serverError, setServerError] = useState<string | null>(null);
 
   const handleGoogleLoginSuccess = async (response: any) => {
     try {
-        console.log(response)
-        const serverResponse = await googleLoginAPI(response);
-        const token = serverResponse.accessToken;
-        localStorage.setItem('token', token);
-        console.log(response);
+      await googleLogin(response);
       navigate('/searchRecipe');
-    } catch(error) {
-      console.error(error);
+    } catch(error: any) {
+      setServerError(error.response?.data?.message || 'An error occurred. Please try again.');
     };
   };
 
   const login = async (values: { email: string, password: string }, setSubmitting: (isSubmitting: boolean) => void) => {
     try {
-        console.log("logging in", )
-      const response = await loginAPI(values);
-      console.log(response)
-      const token = response.accessToken;
-      localStorage.setItem('token', token);
-      console.log(response);
+      await loginUser(values)
       setSubmitting(false);
       navigate('/searchRecipe');
       // Navigate to another page or show success message here

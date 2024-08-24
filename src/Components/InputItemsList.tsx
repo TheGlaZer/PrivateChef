@@ -1,20 +1,35 @@
-import { RecpieForm } from '@/Pages/Recipe/RecipeForm';
-import { Autocomplete, AutocompleteGetTagProps, Chip, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Autocomplete, AutocompleteGetTagProps, Chip, TextField } from '@mui/material';
+import React, { useState, useMemo } from 'react';
 import RemoveIcon from "@mui/icons-material/RemoveCircleOutlineSharp";
 
 type InputItemsListProps = {
-  availableItems: string[],
-  chosenItems: string[],
-  setter: (value: React.SetStateAction<RecpieForm>) => void,
-  prop: "allergies" | "ingredients",
-  label: string
-}
+  availableItems: string[];
+  chosenItems: string[];
+  setChosenItems: (value: string[]) => void;
+  label: string;
+};
 
-export default function InputItemsList({ availableItems, chosenItems, setter, prop, label }: InputItemsListProps) {
+export default function InputItemsList({ availableItems, chosenItems, setChosenItems, label }: InputItemsListProps) {
+  const [inputValue, setInputValue] = useState('');
+  const maxItemsToShow = 50;
 
-  const valHtml = chosenItems.map((option: string, index: number) => {
-    // This is to handle new options added by the user (allowed by freeSolo prop).
+  // Ensure availableItems contains unique items
+  const uniqueAvailableItems = Array.from(new Set(availableItems));
+
+  // Dynamically filter and limit the uniqueAvailableItems based on user input
+  const filteredItems = useMemo(() => {
+    if (inputValue === '') {
+      return []; // Collapse the list when input is cleared
+    }
+
+    const filtered = uniqueAvailableItems.filter(item =>
+      item.toLowerCase().includes(inputValue.toLowerCase())
+    );
+
+    return filtered.slice(0, maxItemsToShow);
+  }, [uniqueAvailableItems, inputValue]); // Recalculate when uniqueAvailableItems or inputValue changes
+
+  const valHtml = chosenItems.map((option: string) => {
     const label = option;
     return (
       <Chip
@@ -22,10 +37,7 @@ export default function InputItemsList({ availableItems, chosenItems, setter, pr
         label={label}
         deleteIcon={<RemoveIcon />}
         onDelete={() => {
-          setter((formData: RecpieForm) => ({
-            ...formData,
-            [prop]: chosenItems.filter(entry => entry !== option),
-          }))
+          setChosenItems(chosenItems.filter(entry => entry !== option));
         }}
       />
     );
@@ -39,11 +51,10 @@ export default function InputItemsList({ availableItems, chosenItems, setter, pr
           id="tags-standard"
           freeSolo
           filterSelectedOptions
-          options={availableItems}
-          onChange={(e, newValue) => setter((formData: RecpieForm) => ({
-            ...formData,
-            [prop]: [...newValue],
-          }))}
+          options={filteredItems} // Use filtered and unique items here
+          onChange={(e, newValue) => setChosenItems(newValue.map((item: string) => item.trim()))}
+          inputValue={inputValue}
+          onInputChange={(e, newInputValue) => setInputValue(newInputValue)}
           getOptionLabel={(option: string) => option}
           renderTags={(value: string[], getTagProps: AutocompleteGetTagProps) => null}
           value={chosenItems}
@@ -60,5 +71,5 @@ export default function InputItemsList({ availableItems, chosenItems, setter, pr
         <div className="selectedTags">{valHtml}</div>
       </div>
     </div>
-  )
+  );
 }
