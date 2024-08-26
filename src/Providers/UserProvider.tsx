@@ -7,6 +7,7 @@ interface User {
   email: string;
   image?: string;
   allergies?: string[];
+  id: string
 }
 
 // Define the shape of the context
@@ -31,24 +32,24 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (user) {
-        updateLoggedUser();
+      updateLoggedUser();
     }
     else {
-        localStorage.removeItem('user');
+      localStorage.removeItem('user');
     }
   }, []);
 
   const updateLoggedUser = async () => {
-    try{
-        const user = await getUser();
-        localStorage.setItem('user', JSON.stringify(user));
-        setUser(user);
+    try {
+      const user = await getUser();
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
 
     }
     catch (error) {
-        console.error(error);
+      console.error(error);
     }
-}
+  }
 
 
   const logout = () => {
@@ -63,21 +64,21 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('accessToken', response.accessToken);
     setUser(response.user);
   }
-  
-  const googleLogin =  async (response: any) => {
-      const serverResponse = await googleLoginAPI(response);
-      localStorage.setItem('accessToken', serverResponse.accessToken);
-      setUser(response.user);
+
+  const googleLogin = async (response: any) => {
+    const serverResponse = await googleLoginAPI(response);
+    localStorage.setItem('accessToken', serverResponse.accessToken);
+    setUser(response.user);
   }
 
   const updateUser = async (userData: FormData) => {
     const response = await updateProfileAPI(userData);
-    
+
     setUser(response.user);
-}
+  }
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout, updateUser, loginUser , googleLogin}}>
+    <UserContext.Provider value={{ user, setUser, logout, updateUser, loginUser, googleLogin }}>
       {children}
     </UserContext.Provider>
   );

@@ -5,10 +5,17 @@ export type RecipeRequest = {
     lastRecipeName?: string;
 }
 export type Recipe = {
-    title: string,
-    products: ProductInRecipe[],
-    instructions: string[],
-    imageURL?: string
+    _id: string
+    userId: string;
+    title: string;
+    products: string[];
+    nutritional_values: string[];
+    instructions: string[];
+    created: Date;
+    imageURL: string
+    alreadyLiked: boolean,
+    commentCount: number
+    likeCount: number
 }
 export type Ingredient = {
     id: string,
@@ -19,4 +26,30 @@ export type ProductInRecipe = {
     name: string,
     ingredient: string,
     amount: string
+}
+export type Comment = {
+    _id: string
+    comment: string,
+    recipeId: string,
+    userId: string,
+    created: string,
+    alreadyLiked: boolean,
+    likeCount: number
+}
+export type User = {
+    email: string,
+    password: string,
+    fullName: string,
+    image: string,
+    tokens: string[],
+    created: Date
+}
+
+export type RecipeLike = {
+    recipeId: string;
+    userId: string;
+}
+export type CommentLike = {
+    commentId: string;
+    userId: string;
 }

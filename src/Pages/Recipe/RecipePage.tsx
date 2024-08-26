@@ -51,15 +51,15 @@ export default function RecipePage({ recipe, isNew = true, onRegenerate }: Recip
           <Box>
             {isNew && (
               <Box>
-              <IconButton color="primary" onClick={handleSaveRecipe}>
-                <SaveIcon />
-              </IconButton>
-              
-            <IconButton color="secondary" onClick={handleRegenerateRecipe} disabled={loading}>
-            <RefreshIcon />
-          </IconButton>
-      {loading && <CircularProgress size={24} sx={{ ml: 2 }} />}
-          </Box>
+                <IconButton color="primary" onClick={handleSaveRecipe}>
+                  <SaveIcon />
+                </IconButton>
+
+                <IconButton color="secondary" onClick={handleRegenerateRecipe} disabled={loading}>
+                  <RefreshIcon />
+                </IconButton>
+                {loading && <CircularProgress size={24} sx={{ ml: 2 }} />}
+              </Box>
             )}
           </Box>
         </Box>
@@ -69,7 +69,7 @@ export default function RecipePage({ recipe, isNew = true, onRegenerate }: Recip
             Products
           </Typography>
           <List>
-            {products.map((product, index) => (
+            {products.map((product: any, index) => (
               <ListItem key={index}>
                 <ListItemText primary={`${product.amount} ${product.name || product.product || product.ingredient}`} />
               </ListItem>

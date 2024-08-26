@@ -8,6 +8,7 @@ import { Login, SignUp } from './Pages/Auth';
 import RecipeForm from './Pages/Recipe/RecipeForm';
 import SearchForRecipe from './Pages/Recipe/SearchForRecipe';
 import UserProfile from './Pages/Home/UserProfile';
+import SocialRecipesPage from './Pages/SocialRecipes';
 
 function App() {
   return (
@@ -29,11 +30,12 @@ function App() {
         />
         <div style={{ width: '90%', minHeight: "100%", padding: 50, backgroundColor: "white" }}>
           <Routes>
-            <Route path="/" element={<Home/>} />
-            <Route path="/signup" element={<SignUp/>} />
-            <Route path='/login' element={<Login/>} />
-            <Route path="/searchRecipe" element={<SearchForRecipe/>} />
-            <Route path="/profile" element={<UserProfile/>} /> {/* Add this route */}
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path='/login' element={<Login />} />
+            <Route path="/searchRecipe" element={<SearchForRecipe />} />
+            <Route path="/profile" element={<UserProfile />} /> {/* Add this route */}
+            <Route path="/recipes" element={<SocialRecipesPage />} /> {/* Add this route */}
           </Routes>
         </div>
         <MessageBox />
