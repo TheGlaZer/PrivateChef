@@ -23,6 +23,15 @@ function NavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const isLoggedIn = !!localStorage.getItem('accessToken');
 
+  React.useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/');
+    }
+    else {
+      navigate('/searchRecipe');
+    }
+  }, [isLoggedIn]);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -39,8 +48,10 @@ function NavBar() {
   };
 
   const onLogout = () => {
-    navigate('/');
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    navigate('/');
     handleCloseUserMenu();
   };
 

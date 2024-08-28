@@ -62,6 +62,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     // You can also invalidate the session on the server here if needed
   };
@@ -69,6 +70,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const loginUser = async (values: { email: string, password: string }) => {
     const response = await loginAPI(values);
     localStorage.setItem('accessToken', response.accessToken);
+    localStorage.setItem('refreshToken', response.refreshToken);
     setUser(response.user);
   }
 
