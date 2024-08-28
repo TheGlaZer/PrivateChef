@@ -23,6 +23,12 @@ interface UserContextProps {
 // Create the context with an initial value
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
+const setTokens = ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }) => {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+}
+
+
 // Create a provider component
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
@@ -37,11 +43,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     else {
       localStorage.removeItem('user');
     }
-  }, []);
+  }, [user]);
 
   const updateLoggedUser = async () => {
     try {
       const user = await getUser();
+      console.log("update");
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
 

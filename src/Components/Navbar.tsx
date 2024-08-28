@@ -53,6 +53,7 @@ function NavBar() {
               <img src={logoImage} alt="Logo" style={{ height: 50 }} />
             </IconButton>
           </Box>
+          { isLoggedIn && 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
             <Button
               onClick={() => navigate('/recipes')}
@@ -73,6 +74,7 @@ function NavBar() {
               Search
             </Button>
           </Box>
+        }
 
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>

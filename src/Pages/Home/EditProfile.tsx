@@ -15,14 +15,6 @@ function EditProfile() {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  useEffect(() => {
-    if (user) {
-      setFullName(user.fullName);
-      setAllergies(user.allergies || []);
-      setProfileImage(null); // Reset profileImage after update
-    }
-  }, [user]);
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     

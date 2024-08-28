@@ -5,8 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CommentIcon from '@mui/icons-material/Comment';
 import ExpandIcon from '@mui/icons-material/ExpandMore';
-import { useState } from "react";
-import RecipeCard from "./RecipeCard";
 type RecipeMinimalCardProps = {
     recipe: Recipe;
     setIsExpanded: (value: boolean) => void

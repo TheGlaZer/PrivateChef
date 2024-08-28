@@ -16,13 +16,11 @@ function UserProfile() {
 
   useEffect(() => {
     if (tabValue === 1) {
-      try {
         server.get('/recipe').then((response) => {
           setSavedRecipes(response.data);
+        }).catch((error) => {
+          setErrorMessage(error.response?.data?.message || 'An error occurred. Please try again.');
         });
-      } catch (error) {
-        setErrorMessage('Error fetching saved recipes')
-      }
     }
   }, [tabValue]);
 

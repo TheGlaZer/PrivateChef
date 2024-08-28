@@ -10,8 +10,7 @@ type Props = {
 }
 function AddCommentInput({ setComments, recipeId }: Props) {
     const [text, setText] = useState<string>("");
-    const { user } = useUser()
-
+    
     const handleAddComment = async () => {
         if (text.trim() === "") {
             return

@@ -1,10 +1,8 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
-import RecipeCard from "./RecipeCard";
 import { useEffect, useState } from "react";
 import { getRecipesOfUser } from "../../api/recipe"
 import { Recipe } from "@/models";
-import RecipeMinimalCard from "./RecipeMinimalCard";
 import RecipeCardDisplay from "./RecipeCardDisplay";
 
 function SocialRecipesPage() {
