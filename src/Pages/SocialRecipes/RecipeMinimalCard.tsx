@@ -11,7 +11,7 @@ type RecipeMinimalCardProps = {
 };
 
 function RecipeMinimalCard({ recipe, setIsExpanded }: RecipeMinimalCardProps) {
-    const { title, products, instructions, imageURL, _id: recipeId, likeCount, alreadyLiked, commentCount, } = recipe
+    const { title, products, instructions, imageURL, _id: recipeId, likeCount, alreadyLiked, commentCount, userName } = recipe
     const theme = useTheme()
 
     return (
@@ -21,8 +21,8 @@ function RecipeMinimalCard({ recipe, setIsExpanded }: RecipeMinimalCardProps) {
                     <Typography variant="h3" component="h1" color={theme.palette.primary.main} fontWeight={500}>
                         {title}
                     </Typography>
-                    <Typography variant="body1" gutterBottom fontWeight={500} fontSize={20}>
-                        This is some description for the Recipe
+                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                        By: <Typography component="span" fontWeight={500} color={theme.palette.secondary.main}>{userName}</Typography>
                     </Typography>
                     <Box sx={{ pt: 2, display: "flex", }}>
                         <Button>
