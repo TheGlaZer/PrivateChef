@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
-import { getRecipesOfUser } from "../../api/recipe"
+import { getRecipes, getRecipesOfUser } from "../../api/recipe"
 import { Recipe } from "@/models";
 import RecipeCardDisplay from "./RecipeCardDisplay";
 
@@ -12,7 +12,7 @@ function SocialRecipesPage() {
     const theme = useTheme()
     const getAllRecipes = async () => {
         try {
-            const data: Recipe[] = await getRecipesOfUser()
+            const data: Recipe[] = await getRecipes()
             console.log({ data })
             setRecipes(data)
         } catch (err) {
