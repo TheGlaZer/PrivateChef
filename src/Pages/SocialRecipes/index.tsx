@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
 import { getRecipes, getRecipesOfUser } from "../../api/recipe"
@@ -24,20 +24,18 @@ function SocialRecipesPage() {
     }, [])
 
     return (
-        <>
-            <Box sx={{ pt: 10, pb: 10 }}>
+            <Box>
                 <Typography variant="h2" align="center" color={theme.palette.primary.main} gutterBottom sx={{ pb: 5 }}>
-                    Discover Users' Recipes
+                    Explore Recipes
                 </Typography>
+                <Grid container spacing={2}>
                 {recipes.map(recipe => {
                     return (
-                        <Box sx={{ pb: 1 }}>
                             <RecipeCardDisplay recipe={recipe}></RecipeCardDisplay>
-                        </Box>
                     )
                 })}
+                </Grid>
             </Box>
-        </>
     );
 }
 
