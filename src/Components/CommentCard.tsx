@@ -14,7 +14,7 @@ type CommentCardProps = {
 };
 const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
 
-    const { likeCount, alreadyLiked } = comment
+    const { likeCount, alreadyLiked, userName } = comment
     const [likes, setLikes] = useState(likeCount)
     const [userLiked, setUserLiked] = useState(alreadyLiked)
     const [editMode, setEditMode] = useState(false)
@@ -24,13 +24,16 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
     const isUsersComment = comment.userId === user?.id
 
     const handleLikeClick = async () => {
-        if (userLiked) {
-            return
-        }
         try {
             const res = await postLikeComment(comment._id)
-            setUserLiked(true)
-            setLikes(likes + 1)
+            if (res.status === "liked") {
+                setUserLiked(true)
+                setLikes(likes + 1)
+            }
+            else {
+                setUserLiked(false)
+                setLikes(likes - 1)
+            }
         } catch (error) {
         }
     }
@@ -79,7 +82,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
                     <Typography variant="body1">{comment.comment}</Typography>}
 
                 <Typography variant="caption" color="text.secondary">
-                    User: {comment.userId} | Date: {comment.created}
+                    User: {userName} | Date: {comment.created}
                 </Typography>
             </Box>
             <Button onClick={handleLikeClick}>

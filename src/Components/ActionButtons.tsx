@@ -4,6 +4,8 @@ import CommentIcon from '@mui/icons-material/Comment';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Stack from '@mui/material/Stack';
 import { postLikeRecipe } from '../api/like';
+import { theme } from '../theme/theme';
+import { Card, Typography } from '@mui/material';
 
 
 type ActionButtonsProps = {
@@ -21,13 +23,17 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onCommentClick, onLikeCli
     const [isUserAlreadyLiked, setIsUserAlreadyLiked] = useState(alreadyLiked)
 
     const handleLikeClicked = async () => {
-        if (isUserAlreadyLiked) {
-            return
-        }
         try {
             const res = await postLikeRecipe(recipeId)
-            setLikes(likes + 1)
-            setIsUserAlreadyLiked(true)
+            console.log(res)
+            if (isUserAlreadyLiked) {
+                setLikes(likes - 1)
+                setIsUserAlreadyLiked(false)
+            }
+            else {
+                setLikes(likes + 1)
+                setIsUserAlreadyLiked(true)
+            }
         } catch (err) {
             console.log(err)
         }
@@ -44,15 +50,10 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onCommentClick, onLikeCli
             >
                 {`${commentsNumber}  Comments`}
             </Button>
-            <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<ThumbUpIcon />}
-                sx={{ textTransform: 'none' }}
-                onClick={handleLikeClicked}
+            <Typography
             >
-                {`${likes}  Like`}
-            </Button>
+                {`${likes}  Likes`}
+            </Typography>
         </Stack>
     );
 };

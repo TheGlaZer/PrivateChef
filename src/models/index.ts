@@ -36,6 +36,7 @@ export type Comment = {
     created: string,
     alreadyLiked: boolean,
     likeCount: number
+    userName: string
 }
 export type User = {
     email: string,

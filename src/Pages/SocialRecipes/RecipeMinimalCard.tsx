@@ -5,6 +5,8 @@ import { useTheme } from '@mui/material/styles';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CommentIcon from '@mui/icons-material/Comment';
 import ExpandIcon from '@mui/icons-material/ExpandMore';
+import { useState } from "react";
+import { postLikeRecipe } from "../../api/like";
 type RecipeMinimalCardProps = {
     recipe: Recipe;
     setIsExpanded: (value: boolean) => void
@@ -13,6 +15,26 @@ type RecipeMinimalCardProps = {
 function RecipeMinimalCard({ recipe, setIsExpanded }: RecipeMinimalCardProps) {
     const { title, products, instructions, imageURL, _id: recipeId, likeCount, alreadyLiked, commentCount, userName } = recipe
     const theme = useTheme()
+
+    const [likes, setLikes] = useState(likeCount)
+    const [isUserAlreadyLiked, setIsUserAlreadyLiked] = useState(alreadyLiked)
+
+    const handleLikeClicked = async () => {
+        try {
+            const res = await postLikeRecipe(recipeId)
+            console.log(res)
+            if (res.status == "unliked") {
+                setLikes(likes - 1)
+                setIsUserAlreadyLiked(false)
+            }
+            else {
+                setLikes(likes + 1)
+                setIsUserAlreadyLiked(true)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
         <Card sx={{ maxWidth: 845, height: 180, margin: 'auto', boxShadow: 3, }}>
@@ -25,9 +47,9 @@ function RecipeMinimalCard({ recipe, setIsExpanded }: RecipeMinimalCardProps) {
                         By: <Typography component="span" fontWeight={500} color={theme.palette.secondary.main}>{userName}</Typography>
                     </Typography>
                     <Box sx={{ pt: 2, display: "flex", }}>
-                        <Button>
-                            <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: theme.palette.primary.main }}>{likeCount}</Typography>
-                            <ThumbUpIcon color='info' sx={{ color: alreadyLiked ? theme.palette.primary.main : "lightgray" }} />
+                        <Button onClick={handleLikeClicked}>
+                            <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: theme.palette.primary.main }}>{likes}</Typography>
+                            <ThumbUpIcon color='info' sx={{ color: isUserAlreadyLiked ? theme.palette.primary.main : "lightgray" }} />
                         </Button>
                         <Button>
                             <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: theme.palette.primary.main }}>{commentCount}</Typography>
