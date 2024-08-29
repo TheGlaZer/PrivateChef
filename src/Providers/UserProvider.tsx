@@ -43,7 +43,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     else {
       localStorage.removeItem('user');
     }
-  }, [user]);
+  }, [JSON.stringify(user)]);
 
   const updateLoggedUser = async () => {
     try {
