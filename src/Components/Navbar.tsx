@@ -24,13 +24,20 @@ function NavBar() {
   const isLoggedIn = !!localStorage.getItem('accessToken');
 
   React.useEffect(() => {
+    navigateAccordingToLoggedInState();
+  }, [isLoggedIn]);
+
+  const navigateAccordingToLoggedInState = () => {
     if (!isLoggedIn) {
       navigate('/');
     }
     else {
-      navigate('/searchRecipe');
+      if (window.location.pathname === '/') {
+        navigate('/searchRecipe');
+      }
     }
-  }, [isLoggedIn]);
+  }
+  
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -47,6 +54,11 @@ function NavBar() {
     setAnchorElUser(null);
   };
 
+  const onAccountClick = () => {
+    handleCloseUserMenu();
+    navigate('/profile');
+  }
+
   const onLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
@@ -60,7 +72,7 @@ function NavBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1 }}>
-            <IconButton onClick={() => navigate('/')} sx={{ p: 0 }}>
+            <IconButton onClick={() => navigateAccordingToLoggedInState()} sx={{ p: 0 }}>
               <img src={logoImage} alt="Logo" style={{ height: 50 }} />
             </IconButton>
           </Box>
@@ -110,7 +122,7 @@ function NavBar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem onClick={handleCloseUserMenu}>
+                <MenuItem onClick={onAccountClick}>
                   <Typography textAlign="center">Account</Typography>
                 </MenuItem>
                 <MenuItem onClick={onLogout}>
