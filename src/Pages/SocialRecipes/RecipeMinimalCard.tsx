@@ -1,25 +1,27 @@
 import { serverUrl } from "../../api";
 import { Recipe } from "@/models";
-import { Box, Button, Card, CardContent, CardHeader, CardMedia, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import CommentIcon from '@mui/icons-material/Comment';
 import ExpandIcon from '@mui/icons-material/ExpandMore';
 import { useState } from "react";
 import { postLikeRecipe } from "../../api/like";
+import { useNavigate } from "react-router-dom";
 type RecipeMinimalCardProps = {
     recipe: Recipe;
-    setIsExpanded: (value: boolean) => void
 };
 
-function RecipeMinimalCard({ recipe, setIsExpanded }: RecipeMinimalCardProps) {
+function RecipeMinimalCard({ recipe }: RecipeMinimalCardProps) {
     const { title, products, instructions, imageURL, _id: recipeId, likeCount, alreadyLiked, commentCount, userName } = recipe
     const theme = useTheme()
+    const navigate = useNavigate()
 
     const [likes, setLikes] = useState(likeCount)
     const [isUserAlreadyLiked, setIsUserAlreadyLiked] = useState(alreadyLiked)
 
-    const handleLikeClicked = async () => {
+    const handleLikeClicked = async (e: React.MouseEvent) => {
+        e.stopPropagation()
         try {
             const res = await postLikeRecipe(recipeId)
             console.log(res)
@@ -34,12 +36,21 @@ function RecipeMinimalCard({ recipe, setIsExpanded }: RecipeMinimalCardProps) {
         } catch (err) {
             console.log(err)
         }
+
     }
+
+    
+    const handleCardClick = () => {
+        navigate(`/recipes/${recipeId}`, { state: { recipe } });
+    };
 
     return (
         
         <Grid item xs={12} sm={6} md={4} key={recipe.title}>
-        <Card sx={{ maxWidth: 500, height: 300, margin: 'auto', boxShadow: 3, }}>
+        <Card
+         sx={{ maxWidth: 500, height: 300, margin: 'auto', boxShadow: 3, cursor: "pointer" }}
+         onClick={handleCardClick}
+         >
             <CardHeader title={title} subheader={`By: ${userName}`}/>
             <CardMedia
                     component="img"
@@ -47,21 +58,20 @@ function RecipeMinimalCard({ recipe, setIsExpanded }: RecipeMinimalCardProps) {
                     image={`${serverUrl}${recipe.imageURL}`}
                     alt={recipe.title}
                   />
-            <CardContent>
-                    <Box>
-                        <Button onClick={handleLikeClicked}>
-                            <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: theme.palette.primary.main }}>{likes}</Typography>
-                            <ThumbUpIcon color='info' sx={{ color: isUserAlreadyLiked ? theme.palette.primary.main : "lightgray" }} />
-                        </Button>
-                        <Button>
-                            <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: theme.palette.primary.main }}>{commentCount}</Typography>
-                            <CommentIcon color='info' sx={{ color: theme.palette.primary.main }} />
-                        </Button>
-                        <Button sx={{}} onClick={() => setIsExpanded(true)}>
-                            <ExpandIcon style={{ width: 40, height: 40 }} />
-                        </Button>
+            <CardActions>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Button onClick={handleLikeClicked}>
+                        <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: theme.palette.primary.main }}>{likes}</Typography>
+                        <ThumbUpIcon color='info' sx={{ color: isUserAlreadyLiked ? theme.palette.primary.main : "lightgray" }} />
+                    </Button>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                         <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: theme.palette.primary.main }}>
+                            {commentCount}
+                        </Typography>
+                        <CommentIcon color='info' sx={{ color: theme.palette.primary.main }} />
                     </Box>
-                </CardContent>
+                </Box>
+            </CardActions>
         </Card>
         </Grid>
     );

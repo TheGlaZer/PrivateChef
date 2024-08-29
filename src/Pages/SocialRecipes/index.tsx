@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import { useEffect, useState } from "react";
 import { getRecipes, getRecipesOfUser } from "../../api/recipe"
 import { Recipe } from "@/models";
-import RecipeCardDisplay from "./RecipeCardDisplay";
+import RecipeMinimalCard from "./RecipeMinimalCard";
 
 function SocialRecipesPage() {
 
@@ -31,7 +31,7 @@ function SocialRecipesPage() {
                 <Grid container spacing={2}>
                 {recipes.map(recipe => {
                     return (
-                            <RecipeCardDisplay recipe={recipe}></RecipeCardDisplay>
+                            <RecipeMinimalCard recipe={recipe}></RecipeMinimalCard>
                     )
                 })}
                 </Grid>
