@@ -83,6 +83,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const googleLogin = async (response: any) => {
     const serverResponse = await googleLoginAPI(response);
     localStorage.setItem('accessToken', serverResponse.accessToken);
+    localStorage.setItem('refreshToken', serverResponse.refreshToken);
     setUser(response.user);
   }
 
