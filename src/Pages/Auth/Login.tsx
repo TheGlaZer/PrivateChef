@@ -1,10 +1,8 @@
 import { Formik, Field, Form,  } from 'formik';
 import * as Yup from 'yup';
 import { Button, TextField, Container, Typography, Box, Link, Alert } from '@mui/material';
-import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import { googleLoginAPI, loginAPI } from '../../api/users';
 import { useState } from 'react';
 import { useUser } from '../../Providers/UserProvider';
 

@@ -11,7 +11,7 @@ type RecipePageProps = {
   onRegenerate: () => Promise<void>; // Add a prop to handle regeneration
 };
 
-export default function RecipePage({ recipe, isNew = true, onRegenerate }: RecipePageProps) {
+export default function RecipeCard({ recipe, isNew = true, onRegenerate }: RecipePageProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState<boolean>(false);
 

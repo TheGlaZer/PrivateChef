@@ -1,5 +1,5 @@
 import { Dialog, Card, CardContent, Container } from "@mui/material";
-import RecipePage from "./RecipePage";
+import RecipePage from "./RecipeCard";
 import { useState } from "react";
 import { Recipe, RecipeRequest } from "../../models";
 import RecipeForm from "./RecipeForm";

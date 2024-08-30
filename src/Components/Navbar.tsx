@@ -18,10 +18,26 @@ import { serverUrl } from '../api';
 
 function NavBar() {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, logout } = useUser();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const isLoggedIn = !!localStorage.getItem('accessToken');
+
+  React.useEffect(() => {
+    navigateAccordingToLoggedInState();
+  }, [isLoggedIn]);
+
+  const navigateAccordingToLoggedInState = () => {
+    if (!isLoggedIn) {
+      navigate('/');
+    }
+    else {
+      if (window.location.pathname === '/') {
+        navigate('/searchRecipe');
+      }
+    }
+  }
+  
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -38,9 +54,14 @@ function NavBar() {
     setAnchorElUser(null);
   };
 
-  const onLogout = () => {
+  const onAccountClick = () => {
+    handleCloseUserMenu();
+    navigate('/profile');
+  }
+
+  const onLogout = async () => {
+    await logout();
     navigate('/');
-    localStorage.removeItem('accessToken');
     handleCloseUserMenu();
   };
 
@@ -49,10 +70,11 @@ function NavBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1 }}>
-            <IconButton onClick={() => navigate('/')} sx={{ p: 0 }}>
+            <IconButton onClick={() => navigateAccordingToLoggedInState()} sx={{ p: 0 }}>
               <img src={logoImage} alt="Logo" style={{ height: 50 }} />
             </IconButton>
           </Box>
+          { isLoggedIn && 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
             <Button
               onClick={() => navigate('/recipes')}
@@ -73,6 +95,7 @@ function NavBar() {
               Search
             </Button>
           </Box>
+        }
 
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
@@ -97,7 +120,7 @@ function NavBar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem onClick={handleCloseUserMenu}>
+                <MenuItem onClick={onAccountClick}>
                   <Typography textAlign="center">Account</Typography>
                 </MenuItem>
                 <MenuItem onClick={onLogout}>

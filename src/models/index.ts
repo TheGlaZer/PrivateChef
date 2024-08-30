@@ -16,6 +16,7 @@ export type Recipe = {
     alreadyLiked: boolean,
     commentCount: number
     likeCount: number
+    userName: string
 }
 export type Ingredient = {
     id: string,
@@ -35,6 +36,7 @@ export type Comment = {
     created: string,
     alreadyLiked: boolean,
     likeCount: number
+    userName: string
 }
 export type User = {
     email: string,

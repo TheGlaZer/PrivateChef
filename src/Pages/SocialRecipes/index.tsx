@@ -1,11 +1,9 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
-import RecipeCard from "./RecipeCard";
 import { useEffect, useState } from "react";
-import { getRecipesOfUser } from "../../api/recipe"
+import { getRecipes, getRecipesOfUser } from "../../api/recipe"
 import { Recipe } from "@/models";
 import RecipeMinimalCard from "./RecipeMinimalCard";
-import RecipeCardDisplay from "./RecipeCardDisplay";
 
 function SocialRecipesPage() {
 
@@ -14,7 +12,7 @@ function SocialRecipesPage() {
     const theme = useTheme()
     const getAllRecipes = async () => {
         try {
-            const data: Recipe[] = await getRecipesOfUser()
+            const data: Recipe[] = await getRecipes()
             console.log({ data })
             setRecipes(data)
         } catch (err) {
@@ -26,20 +24,18 @@ function SocialRecipesPage() {
     }, [])
 
     return (
-        <>
-            <Box sx={{ pt: 10, pb: 10 }}>
+            <Box>
                 <Typography variant="h2" align="center" color={theme.palette.primary.main} gutterBottom sx={{ pb: 5 }}>
-                    Discover Users' Recipes
+                    Explore Recipes
                 </Typography>
+                <Grid container spacing={2}>
                 {recipes.map(recipe => {
                     return (
-                        <Box sx={{ pb: 1 }}>
-                            <RecipeCardDisplay recipe={recipe}></RecipeCardDisplay>
-                        </Box>
+                            <RecipeMinimalCard recipe={recipe}></RecipeMinimalCard>
                     )
                 })}
+                </Grid>
             </Box>
-        </>
     );
 }
 

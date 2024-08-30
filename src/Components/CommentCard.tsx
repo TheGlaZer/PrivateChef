@@ -5,38 +5,56 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
+import { Delete } from '@mui/icons-material';
 import { postLikeComment } from '../api/like';
 import { useUser } from '../Providers/UserProvider';
 import { Close } from '@mui/icons-material';
+import { editComment } from '../api/comment';
 
 type CommentCardProps = {
     comment: Comment;
+    handleEditComment: (commentId: string, comment: string) => void
+    handleDeleteComment: (commentId: string) => void
 };
-const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
+const CommentCard: React.FC<CommentCardProps> = ({ comment, handleEditComment, handleDeleteComment }) => {
 
-    const { likeCount, alreadyLiked } = comment
+    const { likeCount, alreadyLiked, userName } = comment
+    const [editedCommentValue, setEditedCommentValue] = useState(comment.comment)
     const [likes, setLikes] = useState(likeCount)
     const [userLiked, setUserLiked] = useState(alreadyLiked)
     const [editMode, setEditMode] = useState(false)
     const theme = useTheme();
     const { user } = useUser()
 
+    console.log(comment.userId)
+    console.log(user)
     const isUsersComment = comment.userId === user?.id
+    console.log(isUsersComment)
 
     const handleLikeClick = async () => {
-        if (userLiked) {
-            return
-        }
         try {
             const res = await postLikeComment(comment._id)
-            setUserLiked(true)
-            setLikes(likes + 1)
+            if (res.status === "liked") {
+                setUserLiked(true)
+                setLikes(likes + 1)
+            }
+            else {
+                setUserLiked(false)
+                setLikes(likes - 1)
+            }
         } catch (error) {
         }
     }
     const handleSaveClick = () => {
+        handleEditComment(comment._id, editedCommentValue)
+        setEditMode(false)
 
     }
+
+    const onDeleteComment = () => {
+        handleDeleteComment(comment._id)
+    }
+
     const handleCloseClick = () => {
         setEditMode(false)
     }
@@ -59,7 +77,8 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
                         <TextField
                             variant="outlined"
                             fullWidth
-                            value={comment.comment}
+                            value={editedCommentValue}
+                            onChange={(e) => setEditedCommentValue(e.target.value)}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -79,17 +98,27 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
                     <Typography variant="body1">{comment.comment}</Typography>}
 
                 <Typography variant="caption" color="text.secondary">
-                    User: {comment.userId} | Date: {comment.created}
+                    User: {userName} | Date: {comment.created}
                 </Typography>
             </Box>
-            <Button onClick={handleLikeClick}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {isUsersComment &&
-                    <EditIcon color='info' sx={{ color: "gray" }} style={{ paddingRight: 5 }} onClick={() => setEditMode(!editMode)} />
+                <Button onClick={() => setEditMode(!editMode)}>
+                    <EditIcon color='info' sx={{ color: "gray" }}/>
+                    </Button>
                 }
+                
+            <Button onClick={handleLikeClick}>
                 <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: userLiked ? theme.palette.primary.main : "lightgray" }}>{likes}</Typography>
                 <ThumbUpIcon color='info' sx={{ color: userLiked ? theme.palette.primary.main : "lightgray" }} />
 
             </Button>
+            {isUsersComment &&
+                <Button onClick={onDeleteComment}>
+                    <Delete color='info'/>
+                </Button>
+            }
+            </Box>
         </Box>
     );
 };

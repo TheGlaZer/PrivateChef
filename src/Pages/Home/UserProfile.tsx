@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Tabs, Tab, Typography, Grid, Card, CardActionArea, CardMedia, CardContent, Dialog, CardContent as MuiCardContent } from '@mui/material';
 import EditProfile from './EditProfile'; // Assume you have a UserForm component for updating user details
 import { Recipe } from '../../models';
-import RecipePage from '../Recipe/RecipePage';
+import RecipePage from '../Recipe/RecipeCard';
 import server, { serverUrl } from '../../api';
 import { useMessageContext } from '../../contexts/MessageBox';
 
@@ -16,13 +16,11 @@ function UserProfile() {
 
   useEffect(() => {
     if (tabValue === 1) {
-      try {
         server.get('/recipe').then((response) => {
           setSavedRecipes(response.data);
+        }).catch((error) => {
+          setErrorMessage(error.response?.data?.message || 'An error occurred. Please try again.');
         });
-      } catch (error) {
-        setErrorMessage('Error fetching saved recipes')
-      }
     }
   }, [tabValue]);
 

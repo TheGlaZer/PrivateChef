@@ -8,20 +8,12 @@ import { serverUrl } from '../../api';
 
 function EditProfile() {
   const theme = useTheme();
-  const { user, updateUser, logout } = useUser();
+  const { user, updateUser } = useUser();
   const [fullName, setFullName] = useState(user?.fullName || '');
   const [allergies, setAllergies] = useState<string[]>(user?.allergies || []);
   const [profileImage, setProfileImage] = useState<File | null>(null); // New state for the profile image
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
-  useEffect(() => {
-    if (user) {
-      setFullName(user.fullName);
-      setAllergies(user.allergies || []);
-      setProfileImage(null); // Reset profileImage after update
-    }
-  }, [user]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -88,11 +80,6 @@ function EditProfile() {
               Save Changes
             </Button>
           </Box>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <Button variant="outlined" color="secondary" onClick={logout}>
-            Logout
-          </Button>
         </Box>
       </Paper>
     </Container>

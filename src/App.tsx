@@ -5,10 +5,10 @@ import { Box } from '@mui/material';
 import saladImage from './assets/salad.jpg'; // make sure to adjust the path to your image
 import MessageBox from './Components/MessageBox';
 import { Login, SignUp } from './Pages/Auth';
-import RecipeForm from './Pages/Recipe/RecipeForm';
 import SearchForRecipe from './Pages/Recipe/SearchForRecipe';
 import UserProfile from './Pages/Home/UserProfile';
 import SocialRecipesPage from './Pages/SocialRecipes';
+import RecipePage from './Pages/SocialRecipes/RecipePage';
 
 function App() {
   return (
@@ -36,6 +36,7 @@ function App() {
             <Route path="/searchRecipe" element={<SearchForRecipe />} />
             <Route path="/profile" element={<UserProfile />} /> {/* Add this route */}
             <Route path="/recipes" element={<SocialRecipesPage />} /> {/* Add this route */}
+            <Route path="/recipes/:id" element={<RecipePage />} /> {/* Add this route */}
           </Routes>
         </div>
         <MessageBox />

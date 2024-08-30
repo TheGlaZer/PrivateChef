@@ -1,4 +1,4 @@
-import { getUser, googleLoginAPI, loginAPI, updateProfileAPI } from '../api/users';
+import { getUser, googleLoginAPI, loginAPI, logoutAPI, updateProfileAPI } from '../api/users';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define the shape of the user data
@@ -23,6 +23,12 @@ interface UserContextProps {
 // Create the context with an initial value
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
+const setTokens = ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }) => {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+}
+
+
 // Create a provider component
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
@@ -37,11 +43,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     else {
       localStorage.removeItem('user');
     }
-  }, []);
+  }, [JSON.stringify(user)]);
 
   const updateLoggedUser = async () => {
     try {
       const user = await getUser();
+      console.log("update");
       localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
 
@@ -52,16 +59,24 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
+  const logout = async () => {
+    try {
+      await logoutAPI();
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      setUser(null);
+    }
+    catch (error) {
+      console.error(error);
+    }
     // You can also invalidate the session on the server here if needed
   };
 
   const loginUser = async (values: { email: string, password: string }) => {
     const response = await loginAPI(values);
     localStorage.setItem('accessToken', response.accessToken);
+    localStorage.setItem('refreshToken', response.refreshToken);
     setUser(response.user);
   }
 
