@@ -1,4 +1,5 @@
-import server from ".";
+import axios from "axios";
+import server, { serverUrl } from ".";
 
 export const loginAPI = async (values: { email: string, password: string }) => {
     const response = await server.post('/users/login', values);
@@ -34,4 +35,13 @@ export const googleLoginAPI = async (values: any) => {
 export const googleRegisterAPI = async (values: { tokenId: string }) => {
     const response = await server.post('/users/googleRegister', values);
     return response.data;
+}
+
+export const logoutAPI = async () => {
+    const { data } = await axios.post(`${serverUrl}/users/logout`, null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+        },
+    });
+    return data;
 }

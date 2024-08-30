@@ -1,4 +1,4 @@
-import { getUser, googleLoginAPI, loginAPI, updateProfileAPI } from '../api/users';
+import { getUser, googleLoginAPI, loginAPI, logoutAPI, updateProfileAPI } from '../api/users';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define the shape of the user data
@@ -59,11 +59,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+  const logout = async () => {
+    try {
+      await logoutAPI();
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      setUser(null);
+    }
+    catch (error) {
+      console.error(error);
+    }
     // You can also invalidate the session on the server here if needed
   };
 

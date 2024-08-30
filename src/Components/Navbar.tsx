@@ -18,7 +18,7 @@ import { serverUrl } from '../api';
 
 function NavBar() {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, logout } = useUser();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const isLoggedIn = !!localStorage.getItem('accessToken');
@@ -59,10 +59,8 @@ function NavBar() {
     navigate('/profile');
   }
 
-  const onLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+  const onLogout = async () => {
+    await logout();
     navigate('/');
     handleCloseUserMenu();
   };
