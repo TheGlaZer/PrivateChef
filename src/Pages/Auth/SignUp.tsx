@@ -16,8 +16,8 @@ function SignUp() {
   const handleGoogleLoginSuccess = async (response: any) => {
     try {
       const serverResponse = await googleLoginAPI(response);
-      const token = serverResponse.accessToken;
-      localStorage.setItem('token', token);
+      localStorage.setItem('accessToken', serverResponse.accessToken);
+      localStorage.setItem('refreshToken', serverResponse.refreshToken);
       navigate('/searchRecipe');
     } catch (error) {
       console.error(error);
