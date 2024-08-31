@@ -27,7 +27,6 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment, handleEditComment, h
     const { user } = useUser()
 
     console.log(comment.userId)
-    console.log(user)
     const isUsersComment = comment.userId === user?.id
     console.log(isUsersComment)
 
@@ -68,7 +67,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment, handleEditComment, h
                 marginBottom: '10px',
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "center",
+                alignItems: "flex-start",
             }}
         >
             <Box>
@@ -103,21 +102,21 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment, handleEditComment, h
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {isUsersComment &&
-                <Button onClick={() => setEditMode(!editMode)}>
-                    <EditIcon color='info' sx={{ color: "gray" }}/>
+                    <Button onClick={() => setEditMode(!editMode)}>
+                        <EditIcon sx={{ color: theme.palette.primary.main }} />
                     </Button>
                 }
-                
-            <Button onClick={handleLikeClick}>
-                <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: userLiked ? theme.palette.primary.main : "lightgray" }}>{likes}</Typography>
-                <ThumbUpIcon color='info' sx={{ color: userLiked ? theme.palette.primary.main : "lightgray" }} />
 
-            </Button>
-            {isUsersComment &&
-                <Button onClick={onDeleteComment}>
-                    <Delete color='info'/>
+                <Button onClick={handleLikeClick}>
+                    <Typography sx={{ fontWeight: 400, fontSize: 20, pr: 1, color: userLiked ? theme.palette.primary.main : "lightgray" }}>{likes}</Typography>
+                    <ThumbUpIcon color='info' sx={{ color: userLiked ? theme.palette.primary.main : "lightgray" }} />
+
                 </Button>
-            }
+                {isUsersComment &&
+                    <Button onClick={onDeleteComment}>
+                        <Delete sx={{ color: theme.palette.primary.main }} />
+                    </Button>
+                }
             </Box>
         </Box>
     );

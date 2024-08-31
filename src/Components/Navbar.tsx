@@ -15,6 +15,7 @@ import logoImage from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../Providers/UserProvider';
 import { serverUrl } from '../api';
+import { theme } from '../theme/theme';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -32,12 +33,10 @@ function NavBar() {
       navigate('/');
     }
     else {
-      if (window.location.pathname === '/') {
-        navigate('/searchRecipe');
-      }
+      navigate('/searchRecipe');
     }
   }
-  
+
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -74,34 +73,34 @@ function NavBar() {
               <img src={logoImage} alt="Logo" style={{ height: 50 }} />
             </IconButton>
           </Box>
-          { isLoggedIn && 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
-            <Button
-              onClick={() => navigate('/recipes')}
-              sx={{ my: 2, color: 'black', display: 'block' }}
-            >
-              Recipes
-            </Button>
-            <Button
-              onClick={() => navigate('/profile')}
-              sx={{ my: 2, color: 'black', display: 'block' }}
-            >
-              Profile
-            </Button>
-            <Button
-              onClick={() => navigate('/searchRecipe')}
-              sx={{ my: 2, color: 'black', display: 'block' }}
-            >
-              Search
-            </Button>
-          </Box>
-        }
+          {isLoggedIn &&
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+              <Button
+                onClick={() => navigate('/recipes')}
+                sx={{ my: 2, color: 'black', display: 'block' }}
+              >
+                Recipes
+              </Button>
+              <Button
+                onClick={() => navigate('/profile')}
+                sx={{ my: 2, color: 'black', display: 'block' }}
+              >
+                Profile
+              </Button>
+              <Button
+                onClick={() => navigate('/searchRecipe')}
+                sx={{ my: 2, color: 'black', display: 'block' }}
+              >
+                Search
+              </Button>
+            </Box>
+          }
 
           {isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar sx={{ width: 40, height: 40 }} src={`${serverUrl}${user?.image}`}></Avatar>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
+                  <Avatar sx={{ width: 40, height: 40, color: "white", backgroundColor: theme.palette.primary.main }} src={`${serverUrl}${user?.image}`}></Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
