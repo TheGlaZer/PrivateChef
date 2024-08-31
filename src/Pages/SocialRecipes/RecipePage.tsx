@@ -15,7 +15,7 @@ type RecipePageProps = {
 };
 
 const RecipePage = () => {
-    console.log("asdsadsa")
+
     const theme = useTheme();
     const location = useLocation();
     const recipe: Recipe = location.state?.recipe;
@@ -47,31 +47,31 @@ const RecipePage = () => {
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box>
                     <Typography variant="h2" component="h1" color={theme.palette.primary.main} fontWeight={500}>
                         {title}
                     </Typography>
                 </Box>
 
                 {imageURL && (
-          <Box sx={{ maxWidth: '80%', margin: 'auto', overflow: 'hidden', borderRadius: '8px' }}>
-            <img
-              src={`${serverUrl}${imageURL}`}
-              alt={title}
-              style={{
-                height: '300px', // Limit the height to avoid taking too much space
-                width: '100%',
-                objectFit: 'cover', // Crop the image if necessary to fit the space
-                borderRadius: '8px',
-                marginBottom: '16px',
-              }}
-            />
-          </Box>
-        )}
+                    <Box sx={{ maxWidth: '80%', margin: 'auto', overflow: 'hidden', borderRadius: '8px', }}>
+                        <img
+                            src={`${serverUrl}${imageURL}`}
+                            alt={title}
+                            style={{
+                                height: '300px', // Limit the height to avoid taking too much space
+                                width: '100%',
+                                objectFit: 'cover', // Crop the image if necessary to fit the space
+                                borderRadius: '8px',
+                                marginBottom: '16px',
+                            }}
+                        />
+                    </Box>
+                )}
 
                 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr auto 1fr' }, gap: 4 }}>
                     <Box>
-                        <Typography variant="h4" component="h3" color={theme.palette.secondary.main} textAlign="center">
+                        <Typography variant="h3" component="h3" color={theme.palette.secondary.main} textAlign="center" >
                             Products
                         </Typography>
                         <List>
@@ -86,7 +86,7 @@ const RecipePage = () => {
                     <Divider orientation="vertical" flexItem />
 
                     <Box>
-                        <Typography variant="h4" component="h3" color={theme.palette.secondary.main} textAlign="center">
+                        <Typography variant="h3" component="h3" color={theme.palette.secondary.main} textAlign="center">
                             Instructions
                         </Typography>
                         <List sx={{ listStyleType: 'decimal', pl: 2 }}>

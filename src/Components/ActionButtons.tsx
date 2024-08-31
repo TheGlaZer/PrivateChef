@@ -40,7 +40,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onCommentClick, onLikeCli
     }
 
     return (
-        <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
+        <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end", alignItems: "center" }}>
             <Button
                 variant="contained"
                 color="secondary"

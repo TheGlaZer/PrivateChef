@@ -42,7 +42,7 @@ export default function RecipeCard({ recipe, isNew = true, onRegenerate }: Recip
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', p: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', p: 2, alignItems: "flex-start" }}>
       <Box sx={{ flex: 1, pr: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h4" component="h1" gutterBottom color={theme.palette.primary.main}>

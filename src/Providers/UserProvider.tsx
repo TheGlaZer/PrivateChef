@@ -24,8 +24,8 @@ interface UserContextProps {
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 const setTokens = ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }) => {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+  localStorage.setItem('accessToken', accessToken);
+  localStorage.setItem('refreshToken', refreshToken);
 }
 
 
@@ -84,7 +84,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const serverResponse = await googleLoginAPI(response);
     localStorage.setItem('accessToken', serverResponse.accessToken);
     localStorage.setItem('refreshToken', serverResponse.refreshToken);
-    setUser(response.user);
+    setUser(serverResponse.user);
   }
 
   const updateUser = async (userData: FormData) => {
