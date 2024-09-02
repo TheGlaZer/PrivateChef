@@ -48,7 +48,7 @@ const RecipePage = () => {
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <Box>
-                    <Typography variant="h2" component="h1" color={theme.palette.primary.main} fontWeight={500}>
+                    <Typography variant="h3" component="h3" color={theme.palette.primary.main} fontWeight={500}>
                         {title}
                     </Typography>
                 </Box>

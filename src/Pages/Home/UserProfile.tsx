@@ -76,7 +76,7 @@ function UserProfile() {
       <Dialog open={open} onClose={handleClose} maxWidth="md" scroll="paper">
         <Card sx={{ m: 0, p: 0, overflow: 'auto', maxHeight: '80vh' }}>
           <MuiCardContent sx={{ p: 2 }}>
-            <RecipePage recipe={selectedRecipe} isNew={false} onRegenerate={async () => { }} />
+            <RecipePage recipe={selectedRecipe} isNew={false} onRegenerate={async () => { }} setOpen={null}/>
           </MuiCardContent>
         </Card>
       </Dialog>

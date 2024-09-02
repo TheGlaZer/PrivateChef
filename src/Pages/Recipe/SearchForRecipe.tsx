@@ -54,7 +54,7 @@ function SearchForRecipe() {
       <Dialog open={open} onClose={handleClose} maxWidth="md" scroll="paper">
         <Card sx={{ m: 0, p: 0, overflow: 'auto', maxHeight: '80vh' }}>
           <CardContent sx={{ p: 2 }}>
-            <RecipePage recipe={recipe} isNew={true} onRegenerate={onRegenarate} />
+            <RecipePage recipe={recipe} isNew={true} onRegenerate={onRegenarate} setOpen={setOpen} />
           </CardContent>
         </Card>
       </Dialog>

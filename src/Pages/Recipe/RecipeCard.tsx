@@ -1,19 +1,23 @@
+import { useMessageContext } from '../../contexts/MessageBox';
 import { serverUrl } from '../../api';
 import { postRecipe, getRecipeAPI } from '../../api/recipe';
 import { Recipe } from '../../models';
 import { Save as SaveIcon, Refresh as RefreshIcon } from '@mui/icons-material';
 import { Typography, List, ListItem, ListItemText, CircularProgress, Divider, Box, useTheme, IconButton } from '@mui/material';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 type RecipePageProps = {
   recipe: Recipe | null;
   isNew: boolean;
   onRegenerate: () => Promise<void>; // Add a prop to handle regeneration
+  setOpen: Dispatch<SetStateAction<boolean>> | null
 };
 
-export default function RecipeCard({ recipe, isNew = true, onRegenerate }: RecipePageProps) {
+export default function RecipeCard({ recipe, isNew = true, onRegenerate, setOpen }: RecipePageProps) {
   const theme = useTheme();
   const [loading, setLoading] = useState<boolean>(false);
+  const { setSuccessMessage, setErrorMessage } = useMessageContext();
+
 
   if (!recipe) return null;
 
@@ -22,10 +26,10 @@ export default function RecipeCard({ recipe, isNew = true, onRegenerate }: Recip
   const handleSaveRecipe = async () => {
     try {
       await postRecipe(recipe);
-      alert('Recipe saved successfully!');
+      setSuccessMessage("Recipe saved successfuly!")
+      setOpen && setOpen(false);
     } catch (error) {
-      console.error('Error saving recipe:', error);
-      alert('Failed to save recipe. Please try again.');
+      setErrorMessage('Error saving recipe');
     }
   };
 
