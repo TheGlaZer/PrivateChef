@@ -13,12 +13,13 @@ export type RecipeRequestForm = {
   hasAllergies: boolean;
   allergies: string[];
   ingredients: string[];
+  additionalInput: string;
 };
 
 function SearchForRecipe() {
   const [open, setOpen] = useState(false);
   const { user } = useUser();
-  const [formData, setFormData] = useState<RecipeRequestForm>({ preferences: '', hasAllergies: user?.allergies && user.allergies.length > 0 || false, allergies: user?.allergies || [], ingredients: [] });
+  const [formData, setFormData] = useState<RecipeRequestForm>({ preferences: '', hasAllergies: user?.allergies && user.allergies.length > 0 || false, allergies: user?.allergies || [], ingredients: [], additionalInput: "" });
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const { setErrorMessage } = useMessageContext();
 
@@ -31,10 +32,11 @@ function SearchForRecipe() {
   }
 
   const onRecipeRequest = async (isRegenerate: boolean = false) => { 
-    const { allergies, ingredients } = formData;
+    const { allergies, ingredients, additionalInput } = formData;
     const recipeRequest: RecipeRequest = {
       allergies,
       ingredients,
+      additionalInput,
       isRegenerate,
       lastRecipeName: recipe?.title
     };
