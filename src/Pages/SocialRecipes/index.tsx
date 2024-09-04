@@ -25,7 +25,7 @@ function SocialRecipesPage() {
 
     return (
             <Box>
-                <Typography variant="h2" align="center" color={theme.palette.primary.main} gutterBottom sx={{ pb: 5 }}>
+                <Typography variant="h4" align="center" color={theme.palette.primary.main} gutterBottom sx={{ pb: 5 }}>
                     Explore Recipes
                 </Typography>
                 <Grid container spacing={2}>

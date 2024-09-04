@@ -75,25 +75,55 @@ function NavBar() {
           </Box>
           {isLoggedIn &&
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
-              <Button
-                onClick={() => navigate('/recipes')}
-                sx={{ my: 2, color: 'black', display: 'block' }}
-              >
-                Recipes
-              </Button>
-              <Button
-                onClick={() => navigate('/profile')}
-                sx={{ my: 2, color: 'black', display: 'block' }}
-              >
-                Profile
-              </Button>
-              <Button
-                onClick={() => navigate('/searchRecipe')}
-                sx={{ my: 2, color: 'black', display: 'block' }}
-              >
-                Search
-              </Button>
-            </Box>
+            <Button
+              onClick={() => navigate('/recipes')}
+              sx={{
+                my: 2, color: 'black', display: 'block', px: 3, py: 1,
+                textTransform: 'none',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '20px',
+                fontWeight: 'bold',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                  color: 'primary.main'
+                },
+              }}
+            >
+              Recipes
+            </Button>
+            <Button
+              onClick={() => navigate('/profile')}
+              sx={{
+                my: 2, color: 'black', display: 'block', px: 3, py: 1,
+                textTransform: 'none',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '20px',
+                fontWeight: 'bold',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                  color: 'primary.main'
+                },
+              }}
+            >
+              Profile
+            </Button>
+            <Button
+              onClick={() => navigate('/searchRecipe')}
+              sx={{
+                my: 2, color: 'black', display: 'block', px: 3, py: 1,
+                textTransform: 'none',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                borderRadius: '20px',
+                fontWeight: 'bold',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                  color: 'primary.main'
+                },
+              }}
+            >
+              Search
+            </Button>
+          </Box>
           }
 
           {isLoggedIn && (

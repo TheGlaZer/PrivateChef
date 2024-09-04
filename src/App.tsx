@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Home from './Pages/Home/HomePage';
-import { Box } from '@mui/material';
-import saladImage from './assets/salad.jpg'; // make sure to adjust the path to your image
+import { Box, Container } from '@mui/material';
+import saladImage from './assets/salad.jpg';
 import MessageBox from './Components/MessageBox';
 import { Login, SignUp } from './Pages/Auth';
 import SearchForRecipe from './Pages/Recipe/SearchForRecipe';
@@ -13,22 +13,41 @@ import RecipePage from './Pages/SocialRecipes/RecipePage';
 function App() {
   return (
     <Router>
-      <div style={{
-        width: '100%', minHeight: "100vh", backgroundColor: 'lightgray',
-        display: "flex", alignItems: "center", padding: 0, margin: 0, position: "relative",
-        flexDirection: "column"
-      }}>
+      <Box
+        sx={{
+          width: '100%',
+          minHeight: "100vh",
+          backgroundColor: 'lightgray',
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          padding: 0,
+          margin: 0,
+          position: "relative"
+        }}
+      >
         <Navbar />
         <Box
           sx={{
             width: '100%',
-            height: '200px',
+            height: { xs: '150px', sm: '200px', md: '300px' }, // Responsive height
             backgroundImage: `url(${saladImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         />
-        <div style={{ width: '90%', minHeight: "100%", padding: 50, backgroundColor: "white" }}>
+        <Container
+          sx={{
+            width: '90%',
+            minHeight: "100%",
+            py: 5,
+            backgroundColor: "white",
+            boxShadow: 3,
+            borderRadius: 2,
+            mt: -10, // overlap the background image
+            zIndex: 1
+          }}
+        >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
@@ -38,9 +57,9 @@ function App() {
             <Route path="/recipes" element={<SocialRecipesPage />} /> {/* Add this route */}
             <Route path="/recipes/:id" element={<RecipePage />} /> {/* Add this route */}
           </Routes>
-        </div>
+        </Container>
         <MessageBox />
-      </div>
+      </Box>
     </Router>
   );
 }

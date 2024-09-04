@@ -48,10 +48,10 @@ function RecipeMinimalCard({ recipe }: RecipeMinimalCardProps) {
         
         <Grid item xs={12} sm={6} md={4} key={recipe.title}>
         <Card
-         sx={{ maxWidth: 500, height: 300, margin: 'auto', boxShadow: 3, cursor: "pointer" }}
+         sx={{ cursor: "pointer" }}
          onClick={handleCardClick}
          >
-            <CardHeader title={title} subheader={`By: ${userName}`}/>
+            <CardHeader  title={title} subheader={`By: ${userName}`}/>
             <CardMedia
                     component="img"
                     height="140"
