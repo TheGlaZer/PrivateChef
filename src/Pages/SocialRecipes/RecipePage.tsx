@@ -101,7 +101,7 @@ const RecipePage = () => {
                             Instructions
                         </Typography>
                         <List sx={{ listStyleType: 'decimal', pl: 2 }}>
-                            {instructions.map((instruction: string, index: number) => (
+                            {instructions?.map((instruction: string, index: number) => (
                                 <ListItem key={index} sx={{ display: 'list-item' }}>
                                     <ListItemText primary={instruction} />
                                 </ListItem>

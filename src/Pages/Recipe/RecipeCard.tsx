@@ -21,6 +21,7 @@ export default function RecipeCard({ recipe, isNew = true, onRegenerate, setOpen
   if (!recipe) return null;
 
   const { products, instructions, title, imageURL, nutritionalValues, missingItems } = recipe;
+  console.log(recipe)
 
   const handleSaveRecipe = async () => {
     try {
@@ -100,7 +101,7 @@ export default function RecipeCard({ recipe, isNew = true, onRegenerate, setOpen
             Instructions
           </Typography>
           <List sx={{ listStyleType: 'decimal', pl: 2 }}>
-            {instructions.map((instruction, index) => (
+            {instructions?.map((instruction, index) => (
               <ListItem key={index} sx={{ display: 'list-item' }}>
                 <ListItemText primary={instruction} />
               </ListItem>
