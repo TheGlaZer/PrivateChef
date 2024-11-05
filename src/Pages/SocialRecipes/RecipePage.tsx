@@ -75,23 +75,26 @@ const RecipePage = () => {
                             Products
                         </Typography>
                         <List>
-                            {products.map((product: any, index: number) => (
+                            {products?.map((product: any, index: number) => (
                                 <ListItem key={index}>
                                     <ListItemText primary={`${product.amount} ${product.name || product.product || product.ingredient}`} />
                                 </ListItem>
                             ))}
                         </List>
-                        
-                        <Typography variant="h3" component="h3" color={theme.palette.secondary.main} textAlign="center" >
-                            Nutritional values
-                        </Typography>
-                        <List>
-                            {nutritionalValues.map((nutrition: any, index: number) => (
-                                <ListItem key={index}>
-                                    <ListItemText primary={`${nutrition.name} ${nutrition.value}`} />
-                                </ListItem>
-                            ))}
-                        </List>
+                        {nutritionalValues?.length > 0 && (
+                            <>
+                                <Typography variant="h3" component="h3" color={theme.palette.secondary.main} textAlign="center">
+                                    Nutritional values
+                                </Typography>
+                                <List>
+                                    {nutritionalValues.map((nutrition: any, index: number) => (
+                                        <ListItem key={index}>
+                                            <ListItemText primary={`${nutrition.name} ${nutrition.value}`} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </>
+                        )}
                     </Box>
 
                     <Divider orientation="vertical" flexItem />
