@@ -1,6 +1,7 @@
 export type RecipeRequest = {
     allergies: string[];
     ingredients: string[];
+    additionalInput: string;
     isRegenerate?: boolean;
     lastRecipeName?: string;
 }
@@ -9,7 +10,8 @@ export type Recipe = {
     userId: string;
     title: string;
     products: string[];
-    nutritional_values: string[];
+    nutritionalValues: string[];
+    missingItems: string[];
     instructions: string[];
     created: Date;
     imageURL: string

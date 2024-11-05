@@ -21,7 +21,7 @@ const RecipePage = () => {
     const recipe: Recipe = location.state?.recipe;
     const [showCommentSection, setShowCommentSection] = useState(false);
     const [comments, setComments] = useState<Comment[]>([]);
-    const { title, products, instructions, imageURL, _id: recipeId, likeCount, alreadyLiked } = recipe;
+    const { title, products, nutritionalValues, instructions, imageURL, _id: recipeId, likeCount, alreadyLiked } = recipe;
 
     const fetchComments = async (recipeId: string) => {
         try {
@@ -81,6 +81,17 @@ const RecipePage = () => {
                                 </ListItem>
                             ))}
                         </List>
+                        
+                        <Typography variant="h3" component="h3" color={theme.palette.secondary.main} textAlign="center" >
+                            Nutritional values
+                        </Typography>
+                        <List>
+                            {nutritionalValues.map((nutrition: any, index: number) => (
+                                <ListItem key={index}>
+                                    <ListItemText primary={`${nutrition.name} ${nutrition.value}`} />
+                                </ListItem>
+                            ))}
+                        </List>
                     </Box>
 
                     <Divider orientation="vertical" flexItem />
@@ -90,7 +101,7 @@ const RecipePage = () => {
                             Instructions
                         </Typography>
                         <List sx={{ listStyleType: 'decimal', pl: 2 }}>
-                            {instructions.map((instruction: string, index: number) => (
+                            {instructions?.map((instruction: string, index: number) => (
                                 <ListItem key={index} sx={{ display: 'list-item' }}>
                                     <ListItemText primary={instruction} />
                                 </ListItem>
